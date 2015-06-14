@@ -79,10 +79,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="MoqTestCaseAttribute.cs" />
-    <Compile Include="MoqDataAttribute.cs" />
+    <Compile Include="Extensions\ForChar\ToHex.cs" />
     <Compile Include="LocalAddin.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
