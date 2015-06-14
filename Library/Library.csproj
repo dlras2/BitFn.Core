@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ForStringBuilder.cs" />
     <Compile Include="Extensions\ForExpression.cs" />
     <Compile Include="Extensions\ForChar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -22,6 +22,7 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 			// Assert
 			Assert.AreEqual(nameof(TestPoco.Property), actual.Name);
 		}
+
 		[Test]
 		public void WhenGivenNull_ShouldThrowArgumentNullException()
 		{
