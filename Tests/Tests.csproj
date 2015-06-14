@@ -80,6 +80,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Extensions\ForChar\ToHex.cs" />
+    <Compile Include="Extensions\ForExpression\GetPropertyInfo.cs" />
     <Compile Include="LocalAddin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
