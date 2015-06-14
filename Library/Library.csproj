@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ForIEnumerable.cs" />
     <Compile Include="ThreadSafeRandom.cs" />
     <Compile Include="Extensions\ForStringBuilder.cs" />
     <Compile Include="Extensions\ForExpression.cs" />

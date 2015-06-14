@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Extensions\ForChar\ToHex.cs" />
     <Compile Include="Extensions\ForExpression\GetPropertyInfo.cs" />
+    <Compile Include="Extensions\ForIEnumerable\Shuffle.cs" />
     <Compile Include="Extensions\ForStringBuilder\Append.cs" />
     <Compile Include="LocalAddin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
