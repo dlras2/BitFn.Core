@@ -3,6 +3,8 @@
 A general utility library.
 
 #### Release Notes:
+- **0.1.2**
+  - \+ `Extensions.ForString`
 - **0.1.1**
   - \+ `Extensions.ForIEnumerable`
   - \+ `ThreadSafeRandom`
