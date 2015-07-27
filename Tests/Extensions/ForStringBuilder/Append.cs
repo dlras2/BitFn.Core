@@ -11,7 +11,6 @@ namespace BitFn.Core.Tests.Extensions.ForStringBuilder
 	public class Append
 	{
 		[Test]
-		[AutoData]
 		public void WhenGivenAnyInput_ShouldReturnSelf()
 		{
 			// Arrange
@@ -27,7 +26,6 @@ namespace BitFn.Core.Tests.Extensions.ForStringBuilder
 		}
 
 		[Test]
-		[AutoData]
 		public void WhenGivenNull_ShouldThrowArgumentNullException()
 		{
 			// Arrange
@@ -44,7 +42,6 @@ namespace BitFn.Core.Tests.Extensions.ForStringBuilder
 		}
 
 		[Test]
-		[AutoData]
 		public void WhenGivenNegativeCount_ShouldThrowArgumentOutOfRangeException()
 		{
 			// Arrange

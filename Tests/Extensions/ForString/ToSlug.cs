@@ -9,24 +9,20 @@ namespace BitFn.Core.Tests.Extensions.ForString
 	[TestFixture]
 	public class ToSlug
 	{
-		[TestCase("A", "a")]
-		[TestCase("AB", "ab")]
-		[TestCase("AbC", "abc")]
-		[TestCase("A B", "a-b")]
-		[TestCase("A_B", "a_b")]
-		[TestCase("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")]
-		[TestCase("0123456789", "0123456789")]
-		[TestCase("AEIÖU", "aeiou")]
-		[TestCase("AE Æ", "ae-ae")]
-		[TestCase("OE Œ", "oe-oe")]
-		[TestCase("SS ẞ", "ss-ss")]
-		public void WhenConvertingToLowercase_ShouldReturnValidSlug(string s, string expected)
+		[TestCase("A", Result= "a")]
+		[TestCase("AB", Result = "ab")]
+		[TestCase("AbC", Result = "abc")]
+		[TestCase("A B", Result = "a-b")]
+		[TestCase("A_B", Result = "a_b")]
+		[TestCase("ABCDEFGHIJKLMNOPQRSTUVWXYZ", Result = "abcdefghijklmnopqrstuvwxyz")]
+		[TestCase("0123456789", Result = "0123456789")]
+		[TestCase("AEIÖU", Result = "aeiou")]
+		[TestCase("AE Æ", Result = "ae-ae")]
+		[TestCase("OE Œ", Result = "oe-oe")]
+		[TestCase("SS ẞ", Result = "ss-ss")]
+		public string WhenConvertingToLowercase_ReturnsLowercase(string s)
 		{
-			// Arrange
-			// Act
-			var actual = Core.Extensions.ForString.ToSlug(s, true);
-			// Assert
-			Assert.AreEqual(expected, actual);
+			return Core.Extensions.ForString.ToSlug(s, lowercase: true);
 		}
 
 		[Test]
@@ -40,11 +36,10 @@ namespace BitFn.Core.Tests.Extensions.ForString
 		}
 
 		[Test]
-		[AutoData]
-		public void WhenGivenGuid_ShouldReturnEqual(Guid guid)
+		public void WhenGivenGuid_ShouldReturnEqual()
 		{
 			// Arrange
-			var expected = guid.ToString();
+			var expected = Guid.NewGuid().ToString();
 			// Act
 			var actual = Core.Extensions.ForString.ToSlug(expected);
 			// Assert
@@ -61,84 +56,68 @@ namespace BitFn.Core.Tests.Extensions.ForString
 			Assert.Throws<ArgumentNullException>(code);
 		}
 
-		[TestCase("", "")]
-		[TestCase("_", "_")]
-		[TestCase("a", "a")]
-		[TestCase("ab", "ab")]
-		[TestCase("a\u0001b", "ab")]
-		[TestCase("A", "A")]
-		[TestCase("AB", "AB")]
-		[TestCase("AbC", "AbC")]
-		[TestCase("a b", "a-b")]
-		[TestCase("a\u00A0b", "a-b")]
-		[TestCase("a  b", "a-b")]
-		[TestCase(" a  b ", "a-b")]
-		[TestCase("a-b", "a-b")]
-		[TestCase("a—b", "a-b")]
-		[TestCase("a\u2015b", "a-b")]
-		[TestCase("a--b", "a-b")]
-		[TestCase("-a--b-", "a-b")]
-		[TestCase("\na\t \nb\t", "a-b")]
-		[TestCase("a'\"!@#$%^&*:;b", "ab")]
-		[TestCase("a(b)c[d]e{f}g/h\\i|j", "a-b-c-d-e-f-g-h-i-j")]
-		[TestCase("abcdefghijklmnopqrstuvwxyz", "abcdefghijklmnopqrstuvwxyz")]
-		[TestCase("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
-		[TestCase("0123456789", "0123456789")]
-		[TestCase("(1+2)i=3i", "1-2-i-3i")]
-		[TestCase("abcdé", "abcde")]
-		[TestCase("AEIÖU", "AEIOU")]
-		[TestCase("ae æ", "ae-ae")]
-		[TestCase("AE Æ", "AE-AE")]
-		[TestCase("oe œ", "oe-oe")]
-		[TestCase("OE Œ", "OE-OE")]
-		[TestCase("ss ß", "ss-ss")]
-		[TestCase("SS ẞ", "SS-SS")]
-		public void WhenGivenValidInput_ShouldReturnValidSlug(string s, string expected)
+		[TestCase("", Result= "")]
+		[TestCase("_", Result = "_")]
+		[TestCase("a", Result = "a")]
+		[TestCase("ab", Result = "ab")]
+		[TestCase("a\u0001b", Result = "ab")]
+		[TestCase("A", Result = "A")]
+		[TestCase("AB", Result = "AB")]
+		[TestCase("AbC", Result = "AbC")]
+		[TestCase("a b", Result = "a-b")]
+		[TestCase("a\u00A0b", Result = "a-b")]
+		[TestCase("a  b", Result = "a-b")]
+		[TestCase(" a  b ", Result = "a-b")]
+		[TestCase("a-b", Result = "a-b")]
+		[TestCase("a—b", Result = "a-b")]
+		[TestCase("a\u2015b", Result = "a-b")]
+		[TestCase("a--b", Result = "a-b")]
+		[TestCase("-a--b-", Result = "a-b")]
+		[TestCase("\na\t \nb\t", Result = "a-b")]
+		[TestCase("a'\"!@#$%^&*:;b", Result = "ab")]
+		[TestCase("a(b)c[d]e{f}g/h\\i|j", Result = "a-b-c-d-e-f-g-h-i-j")]
+		[TestCase("abcdefghijklmnopqrstuvwxyz", Result = "abcdefghijklmnopqrstuvwxyz")]
+		[TestCase("ABCDEFGHIJKLMNOPQRSTUVWXYZ", Result = "ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
+		[TestCase("0123456789", Result = "0123456789")]
+		[TestCase("(1+2)i=3i", Result = "1-2-i-3i")]
+		[TestCase("abcdé", Result = "abcde")]
+		[TestCase("AEIÖU", Result = "AEIOU")]
+		[TestCase("ae æ", Result = "ae-ae")]
+		[TestCase("AE Æ", Result = "AE-AE")]
+		[TestCase("oe œ", Result = "oe-oe")]
+		[TestCase("OE Œ", Result = "OE-OE")]
+		[TestCase("ss ß", Result = "ss-ss")]
+		[TestCase("SS ẞ", Result = "SS-SS")]
+		public string WhenGivenValidInput_ReturnsValidSlug(string s)
 		{
-			// Arrange
-			// Act
-			var actual = Core.Extensions.ForString.ToSlug(s);
-			// Assert
-			Assert.AreEqual(expected, actual);
+			return Core.Extensions.ForString.ToSlug(s);
 		}
 
-		[TestCase("a[b]c", "a(b)c")]
-		[TestCase("a{b}c", "a(b)c")]
-		[TestCase("a(b)c", "a(b)c")]
-		[TestCase("(a(b)c)", "(a(b)c)")]
-		[TestCase(" (a(b)c) ", "(a(b)c)")]
-		[TestCase(" a ( ( b ) c ) d ", "a-((b)-c)-d")]
-		public void WhenParenthetical_ShouldBreakCorrectly(string s, string expected)
+		[TestCase("a[b]c", Result = "a(b)c")]
+		[TestCase("a{b}c", Result = "a(b)c")]
+		[TestCase("a(b)c", Result = "a(b)c")]
+		[TestCase("(a(b)c)", Result = "(a(b)c)")]
+		[TestCase(" (a(b)c) ", Result = "(a(b)c)")]
+		[TestCase(" a ( ( b ) c ) d ", Result = "a-((b)-c)-d")]
+		public string WhenParenthetical_ReturnsBreaksCorrectly(string s)
 		{
-			// Arrange
-			// Act
-			var actual = Core.Extensions.ForString.ToSlug(s, parenthetical: true);
-			// Assert
-			Assert.AreEqual(expected, actual);
+			return Core.Extensions.ForString.ToSlug(s, parenthetical: true);
 		}
 
-		[TestCase("a(b", "a(b)")]
-		[TestCase("a[(b", "a((b))")]
-		[TestCase("a{[(b", "a(((b)))")]
-		public void WhenParenthetical_ShouldCloseUnmatchedOpenPunctuation(string s, string expected)
+		[TestCase("a(b", Result = "a(b)")]
+		[TestCase("a[(b", Result = "a((b))")]
+		[TestCase("a{[(b", Result = "a(((b)))")]
+		public string WhenParenthetical_ReturnsClosedPunctuation(string s)
 		{
-			// Arrange
-			// Act
-			var actual = Core.Extensions.ForString.ToSlug(s, parenthetical: true);
-			// Assert
-			Assert.AreEqual(expected, actual);
+			return Core.Extensions.ForString.ToSlug(s, parenthetical: true);
 		}
 
-		[TestCase("a)b", "a-b")]
-		[TestCase("a])b", "a-b")]
-		[TestCase("a}])b", "a-b")]
-		public void WhenParenthetical_ShouldIgnoreUnmatchedClosePunctuation(string s, string expected)
+		[TestCase("a)b", Result = "a-b")]
+		[TestCase("a])b", Result = "a-b")]
+		[TestCase("a}])b", Result = "a-b")]
+		public string WhenParenthetical_ReturnsWithoutUnmatchedClosePunctuation(string s)
 		{
-			// Arrange
-			// Act
-			var actual = Core.Extensions.ForString.ToSlug(s, parenthetical: true);
-			// Assert
-			Assert.AreEqual(expected, actual);
+			return Core.Extensions.ForString.ToSlug(s, parenthetical: true);
 		}
 
 		[TestCase("a\u0001b")]
@@ -149,6 +128,19 @@ namespace BitFn.Core.Tests.Extensions.ForString
 			// Act
 			// Assert
 			Assert.Throws<ArgumentOutOfRangeException>(code);
+		}
+
+		[TestCase("à la mode", Result = "a-la-mode")]
+		[TestCase("cañón", Result = "canon")]
+		[TestCase("daïs", Result = "dais")]
+		[TestCase("El Niño", Result = "El-Nino")]
+		[TestCase("façade", Result = "facade")]
+		[TestCase("phở", Result = "pho")]
+		[TestCase("tête-à-tête", Result = "tete-a-tete")]
+		[TestCase("zoölogy", Result = "zoology")]
+		public string WhenGivenDiacritics_ReturnsStripped(string s)
+		{
+			return Core.Extensions.ForString.ToSlug(s);
 		}
 	}
 }
