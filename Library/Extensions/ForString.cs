@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace BitFn.Core.Extensions
 {
@@ -35,7 +34,7 @@ namespace BitFn.Core.Extensions
 		/// <summary>
 		///     Converts the string to a url-safe slug containing only alphanumerics and the dash character. Whitespace and
 		///     punctuation are either ignored or replaced with dashes, while diacritics are removed and certain common Latin
-		///     ligatures are replaced.
+		///     ligatures are replaced. Optionally converts open-close punctuation to parenthesis.
 		/// </summary>
 		/// <remarks>
 		///     This method takes a very literal and technically incorrect approach to certain foreign characters, such as mu (µ)
@@ -90,7 +89,7 @@ namespace BitFn.Core.Extensions
 					wordbreak = true;
 					continue;
 				}
-				else if (CharacterSlugs.TryGetValue(ch, out append))
+				else if (ForeignCharacterSlugs.TryGetValue(ch, out append))
 				{
 					// We have an (approximate) slug equivalent for this character.
 					if (lowercase)
@@ -139,7 +138,7 @@ namespace BitFn.Core.Extensions
 							if (!strict) continue;
 							var character = uc != UnicodeCategory.Control ? ch.ToString() : string.Empty;
 							throw new ArgumentOutOfRangeException(nameof(s), ch,
-								string.Format("Unhandled character in UnicodeCategory.{0}: '{1}' (0x{2}).", uc, character, ch.ToHex()));
+								$"Unhandled character in UnicodeCategory.{uc}: '{character}' (0x{ch.ToHex()}).");
 					}
 				}
 				if (wordbreak && !skipbreak && sb.Length != 0)
@@ -162,21 +161,21 @@ namespace BitFn.Core.Extensions
 			return (sb.ToString().Normalize(NormalizationForm.FormC));
 		}
 
-		private static readonly IDictionary<char, string> CharacterSlugs = new Dictionary<char, string>
+		private static readonly IDictionary<char, string> ForeignCharacterSlugs = new Dictionary<char, string>
 		{
-			{'\u00B5', "u"}, // µ — Greek letter mu
-			{'\u00D0', "D"}, // Ð — Latin capital letter eth
-			{'\u00F0', "d"}, // ð — Latin small letter eth
-			{'\u00D8', "O"}, // Ø — Latin capital letter o with stroke
-			{'\u00F8', "o"}, // ø — Latin small letter o with stroke
-			{'\u00DE', "P"}, // Þ — Latin capital letter thorn
-			{'\u00FE', "p"}, // þ — Latin small letter thorn
-			{'\u00E6', "ae"}, // æ
-			{'\u00C6', "AE"}, // Æ
-			{'\u0153', "oe"}, // œ
-			{'\u0152', "OE"}, // Œ
-			{'\u1E9E', "SS"}, // ẞ — German capital eszett
-			{'\u00DF', "ss"} // ß — German small eszett
+			['\u00B5'] = "u", // µ — Greek letter mu
+			['\u00D0'] = "D", // Ð — Latin capital letter eth
+			['\u00F0'] = "d", // ð — Latin small letter eth
+			['\u00D8'] = "O", // Ø — Latin capital letter o with stroke
+			['\u00F8'] = "o", // ø — Latin small letter o with stroke
+			['\u00DE'] = "P", // Þ — Latin capital letter thorn
+			['\u00FE'] = "p", // þ — Latin small letter thorn
+			['\u00E6'] = "ae", // æ
+			['\u00C6'] = "AE", // Æ
+			['\u0153'] = "oe", // œ
+			['\u0152'] = "OE", // Œ
+			['\u1E9E'] = "SS", // ẞ — German capital eszett
+			['\u00DF'] = "ss" // ß — German small eszett
 		};
 	}
 }
