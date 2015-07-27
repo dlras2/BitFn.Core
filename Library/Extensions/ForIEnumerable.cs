@@ -12,6 +12,9 @@ namespace BitFn.Core.Extensions
 		/// <summary>
 		///     Orders the enumerable in a random order.
 		/// </summary>
+		/// <remarks>
+		///     The resulting enumerable forces execution of the source once any consumption begins.
+		/// </remarks>
 		/// <param name="source">The source to use.</param>
 		/// <returns>The enumerable in a random order.</returns>
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
@@ -23,6 +26,9 @@ namespace BitFn.Core.Extensions
 		/// <summary>
 		///     Orders the enumerable in a random order, using the provided random number generator.
 		/// </summary>
+		/// <remarks>
+		///     The resulting enumerable forces execution of the source once any consumption begins.
+		/// </remarks>
 		/// <param name="source">The source to use.</param>
 		/// <param name="rng">The random number generator to use.</param>
 		/// <returns>The enumerable in a random order.</returns>
@@ -34,7 +40,11 @@ namespace BitFn.Core.Extensions
 			return ShuffleIterator(source, rng);
 		}
 
-		/// <remarks>http://stackoverflow.com/a/5807238/343238</remarks>
+		/// <remarks>
+		///     Adapted from LukeH's answer on StackOverflow.
+		///     http://stackoverflow.com/users/55847/
+		///     http://stackoverflow.com/a/5807238/343238
+		/// </remarks>
 		private static IEnumerable<T> ShuffleIterator<T>(IEnumerable<T> source, Random rng)
 		{
 			var buffer = source.ToList();
