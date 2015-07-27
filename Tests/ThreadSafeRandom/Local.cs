@@ -13,6 +13,7 @@ namespace BitFn.Core.Tests.ThreadSafeRandom
 			var actual = Core.ThreadSafeRandom.Local;
 
 			// Assert
+			Assert.IsNotNull(actual);
 			Assert.IsInstanceOf<Random>(actual);
 		}
 	}

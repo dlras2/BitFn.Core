@@ -15,11 +15,10 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 		{
 			// Arrange
 			var enumerable = null as IEnumerable<object>;
-			var rng = new Random();
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			TestDelegate code = () => { Core.Extensions.ForIEnumerable.Shuffle(enumerable, rng); };
+			TestDelegate code = () => { Core.Extensions.ForIEnumerable.Shuffle(enumerable); };
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -41,14 +40,28 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 		}
 
 		[Test]
+		public void WhenGivenNullRandomDelegate_ShouldThrowArgumentNullExceptionBeforeEnumeration()
+		{
+			// Arrange
+			var enumerable = Enumerable.Empty<object>();
+			var rng = null as RandomIntBetween;
+
+			// Act
+			// ReSharper disable once ExpressionIsAlwaysNull
+			TestDelegate code = () => { Core.Extensions.ForIEnumerable.Shuffle(enumerable, rng); };
+
+			// Assert
+			Assert.Throws<ArgumentNullException>(code);
+		}
+
+		[Test]
 		public void WhenGivenSingleItem_ShouldReturnEqual()
 		{
 			// Arrange
 			var enumerable = new[] {1};
-			var rng = new Random();
 
 			// Act
-			var actual = Core.Extensions.ForIEnumerable.Shuffle(enumerable, rng);
+			var actual = Core.Extensions.ForIEnumerable.Shuffle(enumerable);
 
 			// Assert
 			CollectionAssert.AreEqual(enumerable, actual);
@@ -59,23 +72,23 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 		{
 			// Arrange
 			var enumerable = new[] {1, 2, 3};
-			var rng = new Random();
 
 			// Act
-			var actual = Core.Extensions.ForIEnumerable.Shuffle(enumerable, rng);
+			var actual = Core.Extensions.ForIEnumerable.Shuffle(enumerable);
 
 			// Assert
 			CollectionAssert.AreEquivalent(enumerable, actual);
 		}
 
 		[Test]
-		public void WhenGivenNoRng_ShouldReturn()
+		public void WhenGivenRandom_ShouldUseNext()
 		{
 			// Arrange
 			var enumerable = new[] {1};
+			var rng = new Random();
 
 			// Act
-			var actual = Core.Extensions.ForIEnumerable.Shuffle(enumerable);
+			var actual = Core.Extensions.ForIEnumerable.Shuffle(enumerable, rng);
 
 			// Assert
 			CollectionAssert.AreEqual(enumerable, actual);
