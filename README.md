@@ -3,12 +3,17 @@
 A general utility library.
 
 #### Release Notes:
+- **0.1.3**
+  - `+` `RandomDelegates`
+  - `+` `Extensions.ForIQueryable`
+  - `*` `Extensions.ForIEnumerable`
+  - `*` `ThreadSafeRandom`
 - **0.1.2**
-  - \+ `Extensions.ForString`
+  - `+` `Extensions.ForString`
 - **0.1.1**
-  - \+ `Extensions.ForIEnumerable`
-  - \+ `ThreadSafeRandom`
+  - `+` `Extensions.ForIEnumerable`
+  - `+` `ThreadSafeRandom`
 - **0.1.0** Initial release.
-  - \+ `Extensions.ForChar`
-  - \+ `Extensions.ForExpression`
-  - \+ `Extensions.ForStringBuilder`
+  - `+` `Extensions.ForChar`
+  - `+` `Extensions.ForExpression`
+  - `+` `Extensions.ForStringBuilder`
