@@ -81,7 +81,12 @@
   <ItemGroup>
     <Compile Include="Extensions\ForChar\ToHex.cs" />
     <Compile Include="Extensions\ForExpression\GetPropertyInfo.cs" />
+    <Compile Include="Extensions\ForIEnumerable\OrderDescending.cs" />
+    <Compile Include="Extensions\ForIEnumerable\Order.cs" />
+    <Compile Include="Extensions\ForIEnumerable\ToDictionary.cs" />
     <Compile Include="Extensions\ForIEnumerable\Shuffle.cs" />
+    <Compile Include="Extensions\ForIQueryable\Order.cs" />
+    <Compile Include="Extensions\ForIQueryable\OrderDescending.cs" />
     <Compile Include="Extensions\ForStringBuilder\Append.cs" />
     <Compile Include="Extensions\ForString\ToSlug.cs" />
     <Compile Include="Extensions\ForString\RemoveDiacritics.cs" />

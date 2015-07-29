@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ForIQueryable.cs" />
     <Compile Include="RandomDelegates.cs" />
     <Compile Include="Extensions\ForString.cs" />
     <Compile Include="Extensions\ForIEnumerable.cs" />

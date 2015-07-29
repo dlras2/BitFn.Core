@@ -10,6 +10,48 @@ namespace BitFn.Core.Extensions
 	public static class ForIEnumerable
 	{
 		/// <summary>
+		///     Sorts the elements of a sequence in ascending order according to themselves.
+		/// </summary>
+		/// <param name="source">A sequence of values to order.</param>
+		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		public static IOrderedEnumerable<T> Order<T>(this IEnumerable<T> source)
+		{
+			return source.OrderBy(_ => _);
+		}
+
+		/// <summary>
+		///     Sorts the elements of a sequence in ascending order according to themselves by using a specified comparer.
+		/// </summary>
+		/// <param name="source">A sequence of values to order.</param>
+		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare elements.</param>
+		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		public static IOrderedEnumerable<T> Order<T>(this IEnumerable<T> source, IComparer<T> comparer)
+		{
+			return source.OrderBy(_ => _, comparer);
+		}
+
+		/// <summary>
+		///     Sorts the elements of a sequence in descending order according to themselves.
+		/// </summary>
+		/// <param name="source">A sequence of values to order.</param>
+		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		public static IOrderedEnumerable<T> OrderDescending<T>(this IEnumerable<T> source)
+		{
+			return source.OrderByDescending(_ => _);
+		}
+
+		/// <summary>
+		///     Sorts the elements of a sequence in descending order according to themselves by using a specified comparer.
+		/// </summary>
+		/// <param name="source">A sequence of values to order.</param>
+		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare elements.</param>
+		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		public static IOrderedEnumerable<T> OrderDescending<T>(this IEnumerable<T> source, IComparer<T> comparer)
+		{
+			return source.OrderByDescending(_ => _, comparer);
+		}
+
+		/// <summary>
 		///     Orders the enumerable in a random order.
 		/// </summary>
 		/// <remarks>
@@ -53,6 +95,29 @@ namespace BitFn.Core.Extensions
 			if (rng == null) throw new ArgumentNullException(nameof(rng));
 
 			return ShuffleIterator(source, rng);
+		}
+
+		/// <summary>
+		///     Creates a <see cref="Dictionary{TKey,TValue}" /> from an <see cref="IEnumerable{T}" />.
+		/// </summary>
+		/// <param name="source">An <see cref="IEnumerable{T}" /> to create a <see cref="Dictionary{TKey,TValue}" /> from.</param>
+		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
+		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> source)
+		{
+			return source.ToDictionary(_ => _.Key, _ => _.Value);
+		}
+
+		/// <summary>
+		///     Creates a <see cref="Dictionary{TKey,TValue}" /> from an <see cref="IEnumerable{T}" /> according to a specified
+		///     comparer.
+		/// </summary>
+		/// <param name="source">An <see cref="IEnumerable{T}" /> to create a <see cref="Dictionary{TKey,TValue}" /> from.</param>
+		/// <param name="comparer">An <see cref="IEqualityComparer{T}" /> to compare keys.</param>
+		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
+		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+			IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey> comparer)
+		{
+			return source.ToDictionary(_ => _.Key, _ => _.Value, comparer);
 		}
 
 		/// <remarks>
