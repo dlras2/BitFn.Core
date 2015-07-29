@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
 
 // ReSharper disable InvokeAsExtensionMethod
@@ -53,7 +54,7 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			TestDelegate code = () => { Core.Extensions.ForIEnumerable.ToDictionary(enumerable); };
+			var code = TestDelegate(enumerable);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -76,6 +77,12 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 
 			// Assert
 			Assert.IsFalse(actual.ContainsKey("one"));
+		}
+		
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> source)
+		{
+			return () => Core.Extensions.ForIEnumerable.ToDictionary(source);
 		}
 	}
 }

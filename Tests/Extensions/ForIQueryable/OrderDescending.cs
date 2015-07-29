@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NUnit.Framework;
 
@@ -47,7 +48,7 @@ namespace BitFn.Core.Tests.Extensions.ForIQueryable
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			TestDelegate code = () => { Core.Extensions.ForIQueryable.OrderDescending(queryable); };
+			var code = TestDelegate(queryable);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -67,6 +68,12 @@ namespace BitFn.Core.Tests.Extensions.ForIQueryable
 
 			// Assert
 			CollectionAssert.AreEqual(expected, actual);
+		}
+
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<T>(IQueryable<T> source)
+		{
+			return () => Core.Extensions.ForIQueryable.OrderDescending(source);
 		}
 	}
 }

@@ -31,7 +31,7 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			TestDelegate code = () => { Core.Extensions.ForExpression.GetPropertyInfo(lambda); };
+			var code = TestDelegate(lambda);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -44,7 +44,7 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 			Expression<Func<TestPoco, object>> lambda = (_ => _.Field);
 
 			// Act
-			TestDelegate code = () => { Core.Extensions.ForExpression.GetPropertyInfo(lambda); };
+			var code = TestDelegate(lambda);
 
 			// Assert
 			Assert.Throws<ArgumentException>(code);
@@ -57,7 +57,7 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 			Expression<Func<TestPoco, object>> lambda = (_ => _.Method());
 
 			// Act
-			TestDelegate code = () => { Core.Extensions.ForExpression.GetPropertyInfo(lambda); };
+			var code = TestDelegate(lambda);
 
 			// Assert
 			Assert.Throws<ArgumentException>(code);
@@ -70,10 +70,16 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 			Expression<Func<TestPoco, object>> lambda = (_ => _.Child.Property);
 
 			// Act
-			TestDelegate code = () => { Core.Extensions.ForExpression.GetPropertyInfo(lambda); };
+			var code = TestDelegate(lambda);
 
 			// Assert
 			Assert.Throws<ArgumentException>(code);
+		}
+
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<TSource, TProperty>(Expression<Func<TSource, TProperty>> lambda)
+		{
+			return () => Core.Extensions.ForExpression.GetPropertyInfo(lambda);
 		}
 
 		#region No Resharper

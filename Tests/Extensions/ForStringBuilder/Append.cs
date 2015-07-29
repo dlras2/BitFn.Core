@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using NUnit.Framework;
-using Ploeh.AutoFixture.NUnit2;
 
 // ReSharper disable InvokeAsExtensionMethod
 
@@ -35,7 +35,7 @@ namespace BitFn.Core.Tests.Extensions.ForStringBuilder
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			TestDelegate code = () => { Core.Extensions.ForStringBuilder.Append(sut, s, n); };
+			var code = TestDelegate(sut, s, n);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -51,7 +51,7 @@ namespace BitFn.Core.Tests.Extensions.ForStringBuilder
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			TestDelegate code = () => { Core.Extensions.ForStringBuilder.Append(sut, s, n); };
+			var code = TestDelegate(sut, s, n);
 
 			// Assert
 			Assert.Throws<ArgumentOutOfRangeException>(code);
@@ -86,6 +86,12 @@ namespace BitFn.Core.Tests.Extensions.ForStringBuilder
 
 			// Act / Assert
 			return Core.Extensions.ForStringBuilder.Append(sut, value, n).ToString();
+		}
+
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate(StringBuilder sb, string value, int repeatCount)
+		{
+			return () => Core.Extensions.ForStringBuilder.Append(sb, value, repeatCount);
 		}
 	}
 }

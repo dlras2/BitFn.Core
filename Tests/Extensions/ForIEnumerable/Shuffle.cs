@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NUnit.Framework;
 
@@ -18,7 +19,7 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			TestDelegate code = () => { Core.Extensions.ForIEnumerable.Shuffle(enumerable); };
+			var code = TestDelegate(enumerable);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -33,7 +34,7 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			TestDelegate code = () => { Core.Extensions.ForIEnumerable.Shuffle(enumerable, rng); };
+			var code = TestDelegate(enumerable, rng);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -48,7 +49,7 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			TestDelegate code = () => { Core.Extensions.ForIEnumerable.Shuffle(enumerable, rng); };
+			var code = TestDelegate(enumerable, rng);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -92,6 +93,24 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 
 			// Assert
 			CollectionAssert.AreEqual(enumerable, actual);
+		}
+
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<T>(IEnumerable<T> source)
+		{
+			return () => Core.Extensions.ForIEnumerable.Shuffle(source);
+		}
+
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<T>(IEnumerable<T> source, Random rng)
+		{
+			return () => Core.Extensions.ForIEnumerable.Shuffle(source, rng);
+		}
+
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<T>(IEnumerable<T> source, RandomIntBetween rng)
+		{
+			return () => Core.Extensions.ForIEnumerable.Shuffle(source, rng);
 		}
 	}
 }

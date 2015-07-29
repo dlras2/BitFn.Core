@@ -102,7 +102,7 @@ namespace BitFn.Core.Extensions
 		/// </summary>
 		/// <param name="source">An <see cref="IEnumerable{T}" /> to create a <see cref="Dictionary{TKey,TValue}" /> from.</param>
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
-		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> source)
+		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
 		{
 			return source.ToDictionary(_ => _.Key, _ => _.Value);
 		}
@@ -115,7 +115,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="comparer">An <see cref="IEqualityComparer{T}" /> to compare keys.</param>
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
 		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(
-			IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey> comparer)
+			this IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey> comparer)
 		{
 			return source.ToDictionary(_ => _.Key, _ => _.Value, comparer);
 		}
