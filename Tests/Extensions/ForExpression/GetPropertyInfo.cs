@@ -10,17 +10,31 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 	[TestFixture]
 	public class GetPropertyInfo
 	{
-		[Test]
-		public void WhenGivenPublicPropertyLambda_ShouldMatch()
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<TSource, TProperty>(Expression<Func<TSource, TProperty>> lambda)
 		{
-			// Arrange
-			Expression<Func<TestPoco, object>> lambda = (_ => _.Property);
+			return () => Core.Extensions.ForExpression.GetPropertyInfo(lambda);
+		}
 
-			// Act
-			var actual = Core.Extensions.ForExpression.GetPropertyInfo(lambda);
+		[ExcludeFromCodeCoverage]
+		private class TestPoco
+		{
+#pragma warning disable 649
+			public object Field;
+#pragma warning restore 649
+			public object Property { get; set; }
+			public ChildPoco Child { get; set; }
 
-			// Assert
-			Assert.AreEqual(nameof(TestPoco.Property), actual.Name);
+			public object Method()
+			{
+				return new object();
+			}
+		}
+
+		[ExcludeFromCodeCoverage]
+		private class ChildPoco
+		{
+			public object Property { get; set; }
 		}
 
 		[Test]
@@ -35,6 +49,19 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
+		}
+
+		[Test]
+		public void WhenGivenPublicChildPropertyLambda_ShouldThrowArgumentException()
+		{
+			// Arrange
+			Expression<Func<TestPoco, object>> lambda = (_ => _.Child.Property);
+
+			// Act
+			var code = TestDelegate(lambda);
+
+			// Assert
+			Assert.Throws<ArgumentException>(code);
 		}
 
 		[Test]
@@ -64,47 +91,16 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 		}
 
 		[Test]
-		public void WhenGivenPublicChildPropertyLambda_ShouldThrowArgumentException()
+		public void WhenGivenPublicPropertyLambda_ShouldMatch()
 		{
 			// Arrange
-			Expression<Func<TestPoco, object>> lambda = (_ => _.Child.Property);
+			Expression<Func<TestPoco, object>> lambda = (_ => _.Property);
 
 			// Act
-			var code = TestDelegate(lambda);
+			var actual = Core.Extensions.ForExpression.GetPropertyInfo(lambda);
 
 			// Assert
-			Assert.Throws<ArgumentException>(code);
+			Assert.AreEqual(nameof(TestPoco.Property), actual.Name);
 		}
-
-		[ExcludeFromCodeCoverage]
-		private static TestDelegate TestDelegate<TSource, TProperty>(Expression<Func<TSource, TProperty>> lambda)
-		{
-			return () => Core.Extensions.ForExpression.GetPropertyInfo(lambda);
-		}
-
-		#region No Resharper
-
-		[ExcludeFromCodeCoverage]
-		private class TestPoco
-		{
-			public object Property { get; set; }
-#pragma warning disable 649
-			public object Field;
-#pragma warning restore 649
-			public ChildPoco Child { get; set; }
-
-			public object Method()
-			{
-				return new object();
-			}
-		}
-
-		[ExcludeFromCodeCoverage]
-		private class ChildPoco
-		{
-			public object Property { get; set; }
-		}
-
-		#endregion No Resharper
 	}
 }

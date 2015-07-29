@@ -11,18 +11,10 @@ namespace BitFn.Core.Tests.Extensions.ForIQueryable
 	[TestFixture]
 	public class OrderDescending
 	{
-		[Test]
-		public void WhenGivenQueryable_ShouldOrderDescending()
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<T>(IQueryable<T> source)
 		{
-			// Arrange
-			var queryable = new[] {"A", "a", "B", "b"}.AsQueryable();
-			var expected = new[] {"B", "b", "A", "a"};
-
-			// Act
-			var actual = Core.Extensions.ForIQueryable.OrderDescending(queryable);
-
-			// Assert
-			CollectionAssert.AreEqual(expected, actual);
+			return () => Core.Extensions.ForIQueryable.OrderDescending(source);
 		}
 
 		[Test]
@@ -34,6 +26,22 @@ namespace BitFn.Core.Tests.Extensions.ForIQueryable
 			var comparer = StringComparer.Ordinal;
 
 			// Act
+			var actual = Core.Extensions.ForIQueryable.OrderDescending(queryable, comparer);
+
+			// Assert
+			CollectionAssert.AreEqual(expected, actual);
+		}
+
+		[Test]
+		public void WhenGivenNullComparer_ShouldDefaultComparer()
+		{
+			// Arrange
+			var queryable = new[] {"A", "a", "B", "b"}.AsQueryable();
+			var expected = new[] {"B", "b", "A", "a"};
+			var comparer = null as IComparer<string>;
+
+			// Act
+			// ReSharper disable once ExpressionIsAlwaysNull
 			var actual = Core.Extensions.ForIQueryable.OrderDescending(queryable, comparer);
 
 			// Assert
@@ -55,25 +63,17 @@ namespace BitFn.Core.Tests.Extensions.ForIQueryable
 		}
 
 		[Test]
-		public void WhenGivenNullComparer_ShouldDefaultComparer()
+		public void WhenGivenQueryable_ShouldOrderDescending()
 		{
 			// Arrange
 			var queryable = new[] {"A", "a", "B", "b"}.AsQueryable();
 			var expected = new[] {"B", "b", "A", "a"};
-			var comparer = null as IComparer<string>;
 
 			// Act
-			// ReSharper disable once ExpressionIsAlwaysNull
-			var actual = Core.Extensions.ForIQueryable.OrderDescending(queryable, comparer);
+			var actual = Core.Extensions.ForIQueryable.OrderDescending(queryable);
 
 			// Assert
 			CollectionAssert.AreEqual(expected, actual);
-		}
-
-		[ExcludeFromCodeCoverage]
-		private static TestDelegate TestDelegate<T>(IQueryable<T> source)
-		{
-			return () => Core.Extensions.ForIQueryable.OrderDescending(source);
 		}
 	}
 }

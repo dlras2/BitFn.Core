@@ -10,18 +10,10 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 	[TestFixture]
 	public class Order
 	{
-		[Test]
-		public void WhenGivenEnumerable_ShouldOrder()
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<T>(IEnumerable<T> source)
 		{
-			// Arrange
-			var enumerable = new[] {"A", "a", "B", "b"};
-			var expected = new[] {"a", "A", "b", "B"};
-
-			// Act
-			var actual = Core.Extensions.ForIEnumerable.Order(enumerable);
-
-			// Assert
-			CollectionAssert.AreEqual(expected, actual);
+			return () => Core.Extensions.ForIEnumerable.Order(source);
 		}
 
 		[Test]
@@ -40,17 +32,17 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 		}
 
 		[Test]
-		public void WhenGivenNullEnumerable_ShouldThrowArgumentNullException()
+		public void WhenGivenEnumerable_ShouldOrder()
 		{
 			// Arrange
-			var enumerable = null as IEnumerable<object>;
+			var enumerable = new[] {"A", "a", "B", "b"};
+			var expected = new[] {"a", "A", "b", "B"};
 
 			// Act
-			// ReSharper disable once ExpressionIsAlwaysNull
-			var code = TestDelegate(enumerable);
+			var actual = Core.Extensions.ForIEnumerable.Order(enumerable);
 
 			// Assert
-			Assert.Throws<ArgumentNullException>(code);
+			CollectionAssert.AreEqual(expected, actual);
 		}
 
 		[Test]
@@ -69,10 +61,18 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 			CollectionAssert.AreEqual(expected, actual);
 		}
 
-		[ExcludeFromCodeCoverage]
-		private static TestDelegate TestDelegate<T>(IEnumerable<T> source)
+		[Test]
+		public void WhenGivenNullEnumerable_ShouldThrowArgumentNullException()
 		{
-			return () => Core.Extensions.ForIEnumerable.Order(source);
+			// Arrange
+			var enumerable = null as IEnumerable<object>;
+
+			// Act
+			// ReSharper disable once ExpressionIsAlwaysNull
+			var code = TestDelegate(enumerable);
+
+			// Assert
+			Assert.Throws<ArgumentNullException>(code);
 		}
 	}
 }

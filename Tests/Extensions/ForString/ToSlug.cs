@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using Ploeh.AutoFixture.NUnit2;
 
 // ReSharper disable InvokeAsExtensionMethod
 
@@ -9,7 +8,7 @@ namespace BitFn.Core.Tests.Extensions.ForString
 	[TestFixture]
 	public class ToSlug
 	{
-		[TestCase("A", Result= "a")]
+		[TestCase("A", Result = "a")]
 		[TestCase("AB", Result = "ab")]
 		[TestCase("AbC", Result = "abc")]
 		[TestCase("A B", Result = "a-b")]
@@ -22,41 +21,10 @@ namespace BitFn.Core.Tests.Extensions.ForString
 		[TestCase("SS ẞ", Result = "ss-ss")]
 		public string WhenConvertingToLowercase_ReturnsLowercase(string s)
 		{
-			return Core.Extensions.ForString.ToSlug(s, lowercase: true);
+			return Core.Extensions.ForString.ToSlug(s, true);
 		}
 
-		[Test]
-		public void WhenGivenExtendedASCII_ShouldNotThrowException()
-		{
-			for (var ctr = 1; ctr <= 255; ctr++)
-			{
-				var ch = (char) ctr;
-				Core.Extensions.ForString.ToSlug(ch.ToString());
-			}
-		}
-
-		[Test]
-		public void WhenGivenGuid_ShouldReturnEqual()
-		{
-			// Arrange
-			var expected = Guid.NewGuid().ToString();
-			// Act
-			var actual = Core.Extensions.ForString.ToSlug(expected);
-			// Assert
-			Assert.AreEqual(expected, actual);
-		}
-
-		[Test]
-		public void WhenGivenNullInput_ShouldThrowArgumentNullException()
-		{
-			// Arrange
-			TestDelegate code = () => Core.Extensions.ForString.ToSlug(null);
-			// Act
-			// Assert
-			Assert.Throws<ArgumentNullException>(code);
-		}
-
-		[TestCase("", Result= "")]
+		[TestCase("", Result = "")]
 		[TestCase("_", Result = "_")]
 		[TestCase("a", Result = "a")]
 		[TestCase("ab", Result = "ab")]
@@ -141,6 +109,37 @@ namespace BitFn.Core.Tests.Extensions.ForString
 		public string WhenGivenDiacritics_ReturnsStripped(string s)
 		{
 			return Core.Extensions.ForString.ToSlug(s);
+		}
+
+		[Test]
+		public void WhenGivenExtendedASCII_ShouldNotThrowException()
+		{
+			for (var ctr = 1; ctr <= 255; ctr++)
+			{
+				var ch = (char) ctr;
+				Core.Extensions.ForString.ToSlug(ch.ToString());
+			}
+		}
+
+		[Test]
+		public void WhenGivenGuid_ShouldReturnEqual()
+		{
+			// Arrange
+			var expected = Guid.NewGuid().ToString();
+			// Act
+			var actual = Core.Extensions.ForString.ToSlug(expected);
+			// Assert
+			Assert.AreEqual(expected, actual);
+		}
+
+		[Test]
+		public void WhenGivenNullInput_ShouldThrowArgumentNullException()
+		{
+			// Arrange
+			TestDelegate code = () => Core.Extensions.ForString.ToSlug(null);
+			// Act
+			// Assert
+			Assert.Throws<ArgumentNullException>(code);
 		}
 	}
 }

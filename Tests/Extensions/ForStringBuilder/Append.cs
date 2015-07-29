@@ -10,53 +10,6 @@ namespace BitFn.Core.Tests.Extensions.ForStringBuilder
 	[TestFixture]
 	public class Append
 	{
-		[Test]
-		public void WhenGivenAnyInput_ShouldReturnSelf()
-		{
-			// Arrange
-			var sut = new StringBuilder();
-			var s = Guid.NewGuid().ToString();
-			const int n = 1;
-
-			// Act
-			var actual = Core.Extensions.ForStringBuilder.Append(sut, s, n);
-
-			// Assert
-			Assert.AreSame(sut, actual);
-		}
-
-		[Test]
-		public void WhenGivenNull_ShouldThrowArgumentNullException()
-		{
-			// Arrange
-			var sut = null as StringBuilder;
-			var s = Guid.NewGuid().ToString();
-			const int n = 1;
-
-			// Act
-			// ReSharper disable once ExpressionIsAlwaysNull
-			var code = TestDelegate(sut, s, n);
-
-			// Assert
-			Assert.Throws<ArgumentNullException>(code);
-		}
-
-		[Test]
-		public void WhenGivenNegativeCount_ShouldThrowArgumentOutOfRangeException()
-		{
-			// Arrange
-			var sut = new StringBuilder();
-			var s = Guid.NewGuid().ToString();
-			const int n = -1;
-
-			// Act
-			// ReSharper disable once ExpressionIsAlwaysNull
-			var code = TestDelegate(sut, s, n);
-
-			// Assert
-			Assert.Throws<ArgumentOutOfRangeException>(code);
-		}
-
 		[TestCase(".", 0, Result = "")]
 		[TestCase(null, 100, Result = "")]
 		[TestCase("", 100, Result = "")]
@@ -92,6 +45,53 @@ namespace BitFn.Core.Tests.Extensions.ForStringBuilder
 		private static TestDelegate TestDelegate(StringBuilder sb, string value, int repeatCount)
 		{
 			return () => Core.Extensions.ForStringBuilder.Append(sb, value, repeatCount);
+		}
+
+		[Test]
+		public void WhenGivenAnyInput_ShouldReturnSelf()
+		{
+			// Arrange
+			var sut = new StringBuilder();
+			var s = Guid.NewGuid().ToString();
+			const int n = 1;
+
+			// Act
+			var actual = Core.Extensions.ForStringBuilder.Append(sut, s, n);
+
+			// Assert
+			Assert.AreSame(sut, actual);
+		}
+
+		[Test]
+		public void WhenGivenNegativeCount_ShouldThrowArgumentOutOfRangeException()
+		{
+			// Arrange
+			var sut = new StringBuilder();
+			var s = Guid.NewGuid().ToString();
+			const int n = -1;
+
+			// Act
+			// ReSharper disable once ExpressionIsAlwaysNull
+			var code = TestDelegate(sut, s, n);
+
+			// Assert
+			Assert.Throws<ArgumentOutOfRangeException>(code);
+		}
+
+		[Test]
+		public void WhenGivenNull_ShouldThrowArgumentNullException()
+		{
+			// Arrange
+			var sut = null as StringBuilder;
+			var s = Guid.NewGuid().ToString();
+			const int n = 1;
+
+			// Act
+			// ReSharper disable once ExpressionIsAlwaysNull
+			var code = TestDelegate(sut, s, n);
+
+			// Assert
+			Assert.Throws<ArgumentNullException>(code);
 		}
 	}
 }

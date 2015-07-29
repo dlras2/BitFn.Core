@@ -7,6 +7,23 @@ namespace BitFn.Core.Extensions
 {
 	public static class ForString
 	{
+		private static readonly IDictionary<char, string> ForeignCharacterSlugs = new Dictionary<char, string>
+		{
+			['\u00B5'] = "u", // µ — Greek letter mu
+			['\u00D0'] = "D", // Ð — Latin capital letter eth
+			['\u00F0'] = "d", // ð — Latin small letter eth
+			['\u00D8'] = "O", // Ø — Latin capital letter o with stroke
+			['\u00F8'] = "o", // ø — Latin small letter o with stroke
+			['\u00DE'] = "P", // Þ — Latin capital letter thorn
+			['\u00FE'] = "p", // þ — Latin small letter thorn
+			['\u00E6'] = "ae", // æ
+			['\u00C6'] = "AE", // Æ
+			['\u0153'] = "oe", // œ
+			['\u0152'] = "OE", // Œ
+			['\u1E9E'] = "SS", // ẞ — German capital eszett
+			['\u00DF'] = "ss" // ß — German small eszett
+		};
+
 		/// <summary>
 		///     Removes non-spacing marks from all characters, such as the accent in 'resumé'.
 		/// </summary>
@@ -160,22 +177,5 @@ namespace BitFn.Core.Extensions
 			// Return slug re-normalized to FormC.
 			return (sb.ToString().Normalize(NormalizationForm.FormC));
 		}
-
-		private static readonly IDictionary<char, string> ForeignCharacterSlugs = new Dictionary<char, string>
-		{
-			['\u00B5'] = "u", // µ — Greek letter mu
-			['\u00D0'] = "D", // Ð — Latin capital letter eth
-			['\u00F0'] = "d", // ð — Latin small letter eth
-			['\u00D8'] = "O", // Ø — Latin capital letter o with stroke
-			['\u00F8'] = "o", // ø — Latin small letter o with stroke
-			['\u00DE'] = "P", // Þ — Latin capital letter thorn
-			['\u00FE'] = "p", // þ — Latin small letter thorn
-			['\u00E6'] = "ae", // æ
-			['\u00C6'] = "AE", // Æ
-			['\u0153'] = "oe", // œ
-			['\u0152'] = "OE", // Œ
-			['\u1E9E'] = "SS", // ẞ — German capital eszett
-			['\u00DF'] = "ss" // ß — German small eszett
-		};
 	}
 }

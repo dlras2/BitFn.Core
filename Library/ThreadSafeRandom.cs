@@ -32,7 +32,7 @@ namespace BitFn.Core
 		///     thread-static instance of <see cref="Random" />.
 		/// </summary>
 		/// <seealso cref="System.Random" />
-		public static RandomIntUnder RandomIntUnder => (maxValue) => Local.Next(maxValue);
+		public static RandomIntUnder RandomIntUnder => maxValue => Local.Next(maxValue);
 
 		/// <summary>
 		///     A delegate which returns a random integer that is within a specified range. Uses a thread-static instance of
@@ -53,6 +53,6 @@ namespace BitFn.Core
 		///     instance of <see cref="Random" />.
 		/// </summary>
 		/// <seealso cref="System.Random" />
-		public static RandomBytes RandomBytes => (buffer) => Local.NextBytes(buffer);
+		public static RandomBytes RandomBytes => buffer => Local.NextBytes(buffer);
 	}
 }

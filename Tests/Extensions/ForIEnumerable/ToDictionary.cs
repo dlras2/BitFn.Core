@@ -10,22 +10,10 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 	[TestFixture]
 	public class ToDictionary
 	{
-		[Test]
-		public void WhenGivenKeyValues_ShouldReturnEqualDictionary()
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> source)
 		{
-			// Arrange
-			var enumerable = new[]
-			{
-				new KeyValuePair<string, int>("One", 1),
-				new KeyValuePair<string, int>("Two", 2)
-			};
-			var expected = enumerable;
-
-			// Act
-			var actual = Core.Extensions.ForIEnumerable.ToDictionary(enumerable);
-
-			// Assert
-			CollectionAssert.AreEqual(expected, actual);
+			return () => Core.Extensions.ForIEnumerable.ToDictionary(source);
 		}
 
 		[Test]
@@ -47,17 +35,21 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 		}
 
 		[Test]
-		public void WhenGivenNullEnumerable_ShouldThrowArgumentNullException()
+		public void WhenGivenKeyValues_ShouldReturnEqualDictionary()
 		{
 			// Arrange
-			var enumerable = null as IEnumerable<KeyValuePair<string, int>>;
+			var enumerable = new[]
+			{
+				new KeyValuePair<string, int>("One", 1),
+				new KeyValuePair<string, int>("Two", 2)
+			};
+			var expected = enumerable;
 
 			// Act
-			// ReSharper disable once ExpressionIsAlwaysNull
-			var code = TestDelegate(enumerable);
+			var actual = Core.Extensions.ForIEnumerable.ToDictionary(enumerable);
 
 			// Assert
-			Assert.Throws<ArgumentNullException>(code);
+			CollectionAssert.AreEqual(expected, actual);
 		}
 
 		[Test]
@@ -78,11 +70,19 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 			// Assert
 			Assert.IsFalse(actual.ContainsKey("one"));
 		}
-		
-		[ExcludeFromCodeCoverage]
-		private static TestDelegate TestDelegate<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> source)
+
+		[Test]
+		public void WhenGivenNullEnumerable_ShouldThrowArgumentNullException()
 		{
-			return () => Core.Extensions.ForIEnumerable.ToDictionary(source);
+			// Arrange
+			var enumerable = null as IEnumerable<KeyValuePair<string, int>>;
+
+			// Act
+			// ReSharper disable once ExpressionIsAlwaysNull
+			var code = TestDelegate(enumerable);
+
+			// Assert
+			Assert.Throws<ArgumentNullException>(code);
 		}
 	}
 }

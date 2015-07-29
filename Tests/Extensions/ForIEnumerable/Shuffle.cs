@@ -11,6 +11,37 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 	[TestFixture]
 	public class Shuffle
 	{
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<T>(IEnumerable<T> source)
+		{
+			return () => Core.Extensions.ForIEnumerable.Shuffle(source);
+		}
+
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<T>(IEnumerable<T> source, Random rng)
+		{
+			return () => Core.Extensions.ForIEnumerable.Shuffle(source, rng);
+		}
+
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<T>(IEnumerable<T> source, RandomIntBetween rng)
+		{
+			return () => Core.Extensions.ForIEnumerable.Shuffle(source, rng);
+		}
+
+		[Test]
+		public void WhenGivenMultipleItems_ShouldReturnEquivalent()
+		{
+			// Arrange
+			var enumerable = new[] {1, 2, 3};
+
+			// Act
+			var actual = Core.Extensions.ForIEnumerable.Shuffle(enumerable);
+
+			// Assert
+			CollectionAssert.AreEquivalent(enumerable, actual);
+		}
+
 		[Test]
 		public void WhenGivenNullEnumerable_ShouldThrowArgumentNullExceptionBeforeEnumeration()
 		{
@@ -56,32 +87,6 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 		}
 
 		[Test]
-		public void WhenGivenSingleItem_ShouldReturnEqual()
-		{
-			// Arrange
-			var enumerable = new[] {1};
-
-			// Act
-			var actual = Core.Extensions.ForIEnumerable.Shuffle(enumerable);
-
-			// Assert
-			CollectionAssert.AreEqual(enumerable, actual);
-		}
-
-		[Test]
-		public void WhenGivenMultipleItems_ShouldReturnEquivalent()
-		{
-			// Arrange
-			var enumerable = new[] {1, 2, 3};
-
-			// Act
-			var actual = Core.Extensions.ForIEnumerable.Shuffle(enumerable);
-
-			// Assert
-			CollectionAssert.AreEquivalent(enumerable, actual);
-		}
-
-		[Test]
 		public void WhenGivenRandom_ShouldUseNext()
 		{
 			// Arrange
@@ -95,22 +100,17 @@ namespace BitFn.Core.Tests.Extensions.ForIEnumerable
 			CollectionAssert.AreEqual(enumerable, actual);
 		}
 
-		[ExcludeFromCodeCoverage]
-		private static TestDelegate TestDelegate<T>(IEnumerable<T> source)
+		[Test]
+		public void WhenGivenSingleItem_ShouldReturnEqual()
 		{
-			return () => Core.Extensions.ForIEnumerable.Shuffle(source);
-		}
+			// Arrange
+			var enumerable = new[] {1};
 
-		[ExcludeFromCodeCoverage]
-		private static TestDelegate TestDelegate<T>(IEnumerable<T> source, Random rng)
-		{
-			return () => Core.Extensions.ForIEnumerable.Shuffle(source, rng);
-		}
+			// Act
+			var actual = Core.Extensions.ForIEnumerable.Shuffle(enumerable);
 
-		[ExcludeFromCodeCoverage]
-		private static TestDelegate TestDelegate<T>(IEnumerable<T> source, RandomIntBetween rng)
-		{
-			return () => Core.Extensions.ForIEnumerable.Shuffle(source, rng);
+			// Assert
+			CollectionAssert.AreEqual(enumerable, actual);
 		}
 	}
 }

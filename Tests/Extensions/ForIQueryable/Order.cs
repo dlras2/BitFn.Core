@@ -11,18 +11,10 @@ namespace BitFn.Core.Tests.Extensions.ForIQueryable
 	[TestFixture]
 	public class Order
 	{
-		[Test]
-		public void WhenGivenQueryable_ShouldOrder()
+		[ExcludeFromCodeCoverage]
+		private static TestDelegate TestDelegate<T>(IQueryable<T> source)
 		{
-			// Arrange
-			var queryable = new[] {"A", "a", "B", "b"}.AsQueryable();
-			var expected = new[] {"a", "A", "b", "B"};
-
-			// Act
-			var actual = Core.Extensions.ForIQueryable.Order(queryable);
-
-			// Assert
-			CollectionAssert.AreEqual(expected, actual);
+			return () => Core.Extensions.ForIQueryable.Order(source);
 		}
 
 		[Test]
@@ -34,6 +26,22 @@ namespace BitFn.Core.Tests.Extensions.ForIQueryable
 			var comparer = StringComparer.Ordinal;
 
 			// Act
+			var actual = Core.Extensions.ForIQueryable.Order(queryable, comparer);
+
+			// Assert
+			CollectionAssert.AreEqual(expected, actual);
+		}
+
+		[Test]
+		public void WhenGivenNullComparer_ShouldDefaultComparer()
+		{
+			// Arrange
+			var queryable = new[] {"A", "a", "B", "b"}.AsQueryable();
+			var expected = new[] {"a", "A", "b", "B"};
+			var comparer = null as IComparer<string>;
+
+			// Act
+			// ReSharper disable once ExpressionIsAlwaysNull
 			var actual = Core.Extensions.ForIQueryable.Order(queryable, comparer);
 
 			// Assert
@@ -55,25 +63,17 @@ namespace BitFn.Core.Tests.Extensions.ForIQueryable
 		}
 
 		[Test]
-		public void WhenGivenNullComparer_ShouldDefaultComparer()
+		public void WhenGivenQueryable_ShouldOrder()
 		{
 			// Arrange
 			var queryable = new[] {"A", "a", "B", "b"}.AsQueryable();
 			var expected = new[] {"a", "A", "b", "B"};
-			var comparer = null as IComparer<string>;
 
 			// Act
-			// ReSharper disable once ExpressionIsAlwaysNull
-			var actual = Core.Extensions.ForIQueryable.Order(queryable, comparer);
+			var actual = Core.Extensions.ForIQueryable.Order(queryable);
 
 			// Assert
 			CollectionAssert.AreEqual(expected, actual);
-		}
-
-		[ExcludeFromCodeCoverage]
-		private static TestDelegate TestDelegate<T>(IQueryable<T> source)
-		{
-			return () => Core.Extensions.ForIQueryable.Order(source);
 		}
 	}
 }
