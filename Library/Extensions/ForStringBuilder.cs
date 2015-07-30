@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace BitFn.Core.Extensions
@@ -19,17 +20,14 @@ namespace BitFn.Core.Extensions
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="repeatCount" /> is less than <c>0</c>.</exception>
 		public static StringBuilder Append(this StringBuilder sb, string value, int repeatCount)
 		{
-			if (sb == null) throw new ArgumentNullException(nameof(sb));
+			Contract.Requires<ArgumentNullException>(sb != null);
+			Contract.Requires<ArgumentOutOfRangeException>(repeatCount >= 0);
+			Contract.Ensures(Contract.Result<StringBuilder>() != null);
 
-			if (repeatCount < 0)
-			{
-				throw new ArgumentOutOfRangeException(nameof(repeatCount), repeatCount, "Argument cannot be less than zero.");
-			}
 			if (repeatCount == 0 || string.IsNullOrEmpty(value))
 			{
 				return sb;
 			}
-
 			sb.EnsureCapacity(sb.Length + value.Length*repeatCount);
 			for (var i = 0; i < repeatCount; i++)
 			{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -22,11 +23,13 @@ namespace BitFn.Core.Extensions
 		///     Adapted from Cameron MacFarland's answer on StackOverflow.
 		///     http://stackoverflow.com/users/3820/
 		///     http://stackoverflow.com/a/672212/343238
-		/// </remarks>
+		/// </remarks> 
+		[Pure]
 		public static PropertyInfo GetPropertyInfo<TSource, TProperty>(
 			this Expression<Func<TSource, TProperty>> property)
 		{
-			if (property == null) throw new ArgumentNullException(nameof(property));
+			Contract.Requires<ArgumentNullException>(property != null);
+			Contract.Ensures(Contract.Result<PropertyInfo>() != null);
 
 			var member = property.Body as MemberExpression;
 			if (member == null)
@@ -38,8 +41,9 @@ namespace BitFn.Core.Extensions
 			{
 				throw new ArgumentException($"Expression '{property}' refers to a field, not a property.");
 			}
-			if (propInfo.ReflectedType == null ||
-			    (typeof (TSource) != propInfo.ReflectedType && !typeof (TSource).IsSubclassOf(propInfo.ReflectedType)))
+
+			Contract.Assert(propInfo.ReflectedType != null);
+			if (typeof (TSource) != propInfo.ReflectedType && !typeof (TSource).IsSubclassOf(propInfo.ReflectedType))
 			{
 				throw new ArgumentException(
 					$"Expresion '{property}' refers to a property that is not from type {typeof (TSource)}.");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace BitFn.Core.Extensions
@@ -15,8 +16,12 @@ namespace BitFn.Core.Extensions
 		/// <param name="source">A sequence of values to order.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
+		[Pure]
 		public static IOrderedEnumerable<T> Order<T>(this IEnumerable<T> source)
 		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Ensures(Contract.Result<IOrderedEnumerable<T>>() != null);
+
 			return source.OrderBy(_ => _);
 		}
 
@@ -27,8 +32,12 @@ namespace BitFn.Core.Extensions
 		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare elements.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
+		[Pure]
 		public static IOrderedEnumerable<T> Order<T>(this IEnumerable<T> source, IComparer<T> comparer)
 		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Ensures(Contract.Result<IOrderedEnumerable<T>>() != null);
+
 			return source.OrderBy(_ => _, comparer);
 		}
 
@@ -38,8 +47,12 @@ namespace BitFn.Core.Extensions
 		/// <param name="source">A sequence of values to order.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
+		[Pure]
 		public static IOrderedEnumerable<T> OrderDescending<T>(this IEnumerable<T> source)
 		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Ensures(Contract.Result<IOrderedEnumerable<T>>() != null);
+
 			return source.OrderByDescending(_ => _);
 		}
 
@@ -50,8 +63,12 @@ namespace BitFn.Core.Extensions
 		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare elements.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
+		[Pure]
 		public static IOrderedEnumerable<T> OrderDescending<T>(this IEnumerable<T> source, IComparer<T> comparer)
 		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Ensures(Contract.Result<IOrderedEnumerable<T>>() != null);
+
 			return source.OrderByDescending(_ => _, comparer);
 		}
 
@@ -64,8 +81,12 @@ namespace BitFn.Core.Extensions
 		/// <remarks>
 		///     The resulting enumerable forces execution of the source once any consumption begins.
 		/// </remarks>
+		[Pure]
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
 		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
 			return source.Shuffle(ThreadSafeRandom.RandomIntBetween);
 		}
 
@@ -79,9 +100,12 @@ namespace BitFn.Core.Extensions
 		/// <remarks>
 		///     The resulting enumerable forces execution of the source once any consumption begins.
 		/// </remarks>
+		[Pure]
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rng)
 		{
-			if (rng == null) throw new ArgumentNullException(nameof(rng));
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Requires<ArgumentNullException>(rng != null);
+			Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
 
 			return Shuffle(source, rng.Next);
 		}
@@ -96,10 +120,12 @@ namespace BitFn.Core.Extensions
 		/// <remarks>
 		///     The resulting enumerable forces execution of the source once any consumption begins.
 		/// </remarks>
+		[Pure]
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, RandomIntBetween rng)
 		{
-			if (source == null) throw new ArgumentNullException(nameof(source));
-			if (rng == null) throw new ArgumentNullException(nameof(rng));
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Requires<ArgumentNullException>(rng != null);
+			Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
 
 			return ShuffleIterator(source, rng);
 		}
@@ -110,8 +136,12 @@ namespace BitFn.Core.Extensions
 		/// <param name="source">An <see cref="IEnumerable{T}" /> to create a <see cref="Dictionary{TKey,TValue}" /> from.</param>
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
+		[Pure]
 		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
 		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Ensures(Contract.Result<IDictionary<TKey, TValue>>() != null);
+
 			return source.ToDictionary(_ => _.Key, _ => _.Value);
 		}
 
@@ -123,9 +153,13 @@ namespace BitFn.Core.Extensions
 		/// <param name="comparer">An <see cref="IEqualityComparer{T}" /> to compare keys.</param>
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
+		[Pure]
 		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(
 			this IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey> comparer)
 		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Ensures(Contract.Result<IDictionary<TKey, TValue>>() != null);
+
 			return source.ToDictionary(_ => _.Key, _ => _.Value, comparer);
 		}
 

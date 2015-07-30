@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace BitFn.Core.Extensions
@@ -31,9 +33,11 @@ namespace BitFn.Core.Extensions
 		/// <returns>A string with non-spacing marks removed.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="s" /> is <c>null</c>.</exception>
 		/// <seealso cref="UnicodeCategory.NonSpacingMark" />
+		[Pure]
 		public static string RemoveDiacritics(this string s)
 		{
-			if (s == null) throw new ArgumentNullException(nameof(s));
+			Contract.Requires<ArgumentNullException>(s != null);
+			Contract.Ensures(Contract.Result<string>() != null);
 
 			var d = s.Normalize(NormalizationForm.FormD);
 			var sb = new StringBuilder(s.Length);
@@ -67,10 +71,13 @@ namespace BitFn.Core.Extensions
 		///     as mu (µ) to u, thorn (þ) to p, etc. Any more-delicate handling of these characters should be done beforehand.
 		/// </remarks>
 		/// <seealso cref="UnicodeCategory" />
+		[Pure]
 		public static string ToSlug(this string s, bool lowercase = false,
 			bool parenthetical = false, bool strict = false)
 		{
-			if (s == null) throw new ArgumentNullException(nameof(s));
+			Contract.Requires<ArgumentNullException>(s != null);
+			Contract.Ensures(Contract.Result<string>() != null);
+
 			if (s.Length == 0) return string.Empty;
 
 			// Normalize to FormD in order to remove diacritics.
