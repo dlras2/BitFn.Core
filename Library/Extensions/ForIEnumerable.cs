@@ -11,6 +11,63 @@ namespace BitFn.Core.Extensions
 	public static class ForIEnumerable
 	{
 		/// <summary>
+		///     Groups the elements of a sequence according to a specified key selector function, then counts the number of
+		///     elements each group contains. Each element is counted exactly once.
+		/// </summary>
+		/// <param name="source">An <see cref="IEnumerable{T}" /> whose elements to count.</param>
+		/// <param name="selector">A function to extract the key for each element.</param>
+		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains the selected key and number of elements with that key.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="selector" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="selector" /> returned a <c>null</c> key.</exception>
+		public static IDictionary<TKey, int> CountBy<TValue, TKey>(
+			this IEnumerable<TValue> source, Func<TValue, TKey> selector)
+		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Requires<ArgumentNullException>(selector != null);
+			Contract.Ensures(Contract.Result<IDictionary<TKey, int>>() != null);
+
+			try
+			{
+				return source.GroupBy(selector)
+					.Select(_ => new KeyValuePair<TKey, int>(_.Key, _.Count()))
+					.ToDictionary();
+			}
+			catch (ArgumentNullException ex)
+			{
+				throw new ArgumentException($"{nameof(selector)} cannot return a null key.", ex);
+			}
+		}
+
+		/// <summary>
+		///     Groups the elements of a sequence according to a specified key selector function, then counts the number of
+		///     elements each group contains. Each element is counted zero or more times.
+		/// </summary>
+		/// <param name="source">An <see cref="IEnumerable{T}" /> whose elements to count.</param>
+		/// <param name="selector">A function to extract the keys for each element.</param>
+		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains the selected key and number of elements with that key.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="selector" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="selector" /> returned a <c>null</c> enumerable.</exception>
+		public static IDictionary<TKey, int> CountByMany<TValue, TKey>(
+			this IEnumerable<TValue> source, Func<TValue, IEnumerable<TKey>> selector)
+		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Requires<ArgumentNullException>(selector != null);
+			Contract.Ensures(Contract.Result<IDictionary<TKey, int>>() != null);
+
+			try
+			{
+				return source.SelectMany(selector)
+					.GroupBy(_ => _)
+					.Select(_ => new KeyValuePair<TKey, int>(_.Key, _.Count()))
+					.ToDictionary();
+			}
+			catch (NullReferenceException ex)
+			{
+				throw new ArgumentException($"{nameof(selector)} cannot return a null enumerable.", ex);
+			}
+		}
+
+		/// <summary>
 		///     Sorts the elements of a sequence in ascending order according to themselves.
 		/// </summary>
 		/// <param name="source">A sequence of values to order.</param>

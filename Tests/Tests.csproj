@@ -81,6 +81,8 @@
   <ItemGroup>
     <Compile Include="Extensions\ForChar\ToHex.cs" />
     <Compile Include="Extensions\ForExpression\GetPropertyInfo.cs" />
+    <Compile Include="Extensions\ForIEnumerable\CountByMany.cs" />
+    <Compile Include="Extensions\ForIEnumerable\CountBy.cs" />
     <Compile Include="Extensions\ForIEnumerable\OrderDescending.cs" />
     <Compile Include="Extensions\ForIEnumerable\Order.cs" />
     <Compile Include="Extensions\ForIEnumerable\ToDictionary.cs" />
