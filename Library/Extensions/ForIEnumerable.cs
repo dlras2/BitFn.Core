@@ -14,6 +14,7 @@ namespace BitFn.Core.Extensions
 		/// </summary>
 		/// <param name="source">A sequence of values to order.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		public static IOrderedEnumerable<T> Order<T>(this IEnumerable<T> source)
 		{
 			return source.OrderBy(_ => _);
@@ -25,6 +26,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="source">A sequence of values to order.</param>
 		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare elements.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		public static IOrderedEnumerable<T> Order<T>(this IEnumerable<T> source, IComparer<T> comparer)
 		{
 			return source.OrderBy(_ => _, comparer);
@@ -35,6 +37,7 @@ namespace BitFn.Core.Extensions
 		/// </summary>
 		/// <param name="source">A sequence of values to order.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		public static IOrderedEnumerable<T> OrderDescending<T>(this IEnumerable<T> source)
 		{
 			return source.OrderByDescending(_ => _);
@@ -46,6 +49,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="source">A sequence of values to order.</param>
 		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare elements.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		public static IOrderedEnumerable<T> OrderDescending<T>(this IEnumerable<T> source, IComparer<T> comparer)
 		{
 			return source.OrderByDescending(_ => _, comparer);
@@ -54,11 +58,12 @@ namespace BitFn.Core.Extensions
 		/// <summary>
 		///     Orders the enumerable in a random order.
 		/// </summary>
+		/// <param name="source">The source to use.</param>
+		/// <returns>The enumerable in a random order.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		/// <remarks>
 		///     The resulting enumerable forces execution of the source once any consumption begins.
 		/// </remarks>
-		/// <param name="source">The source to use.</param>
-		/// <returns>The enumerable in a random order.</returns>
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
 		{
 			return source.Shuffle(ThreadSafeRandom.RandomIntBetween);
@@ -67,12 +72,13 @@ namespace BitFn.Core.Extensions
 		/// <summary>
 		///     Orders the enumerable in a random order, using the provided random number generator.
 		/// </summary>
-		/// <remarks>
-		///     The resulting enumerable forces execution of the source once any consumption begins.
-		/// </remarks>
 		/// <param name="source">The source to use.</param>
 		/// <param name="rng">The random number generator to use.</param>
 		/// <returns>The enumerable in a random order.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="rng" /> is <c>null</c>.</exception>
+		/// <remarks>
+		///     The resulting enumerable forces execution of the source once any consumption begins.
+		/// </remarks>
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rng)
 		{
 			if (rng == null) throw new ArgumentNullException(nameof(rng));
@@ -83,12 +89,13 @@ namespace BitFn.Core.Extensions
 		/// <summary>
 		///     Orders the enumerable in a random order, using the provided random number generator.
 		/// </summary>
-		/// <remarks>
-		///     The resulting enumerable forces execution of the source once any consumption begins.
-		/// </remarks>
 		/// <param name="source">The source to use.</param>
 		/// <param name="rng">The random number generation function to use.</param>
 		/// <returns>The enumerable in a random order.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="rng" /> is <c>null</c>.</exception>
+		/// <remarks>
+		///     The resulting enumerable forces execution of the source once any consumption begins.
+		/// </remarks>
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, RandomIntBetween rng)
 		{
 			if (source == null) throw new ArgumentNullException(nameof(source));
@@ -102,6 +109,7 @@ namespace BitFn.Core.Extensions
 		/// </summary>
 		/// <param name="source">An <see cref="IEnumerable{T}" /> to create a <see cref="Dictionary{TKey,TValue}" /> from.</param>
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
 		{
 			return source.ToDictionary(_ => _.Key, _ => _.Value);
@@ -114,6 +122,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="source">An <see cref="IEnumerable{T}" /> to create a <see cref="Dictionary{TKey,TValue}" /> from.</param>
 		/// <param name="comparer">An <see cref="IEqualityComparer{T}" /> to compare keys.</param>
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(
 			this IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey> comparer)
 		{

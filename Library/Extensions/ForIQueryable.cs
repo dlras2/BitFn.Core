@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BitFn.Core.Extensions
@@ -13,6 +14,7 @@ namespace BitFn.Core.Extensions
 		/// </summary>
 		/// <param name="source">A sequence of values to order.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		public static IOrderedQueryable<T> Order<T>(this IQueryable<T> source)
 		{
 			return source.OrderBy(_ => _);
@@ -24,6 +26,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="source">A sequence of values to order.</param>
 		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare elements.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		public static IOrderedQueryable<T> Order<T>(this IQueryable<T> source, IComparer<T> comparer)
 		{
 			return source.OrderBy(_ => _, comparer);
@@ -34,6 +37,7 @@ namespace BitFn.Core.Extensions
 		/// </summary>
 		/// <param name="source">A sequence of values to order.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		public static IOrderedQueryable<T> OrderDescending<T>(this IQueryable<T> source)
 		{
 			return source.OrderByDescending(_ => _);
@@ -45,6 +49,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="source">A sequence of values to order.</param>
 		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare elements.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to themselves.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
 		public static IOrderedQueryable<T> OrderDescending<T>(this IQueryable<T> source, IComparer<T> comparer)
 		{
 			return source.OrderByDescending(_ => _, comparer);

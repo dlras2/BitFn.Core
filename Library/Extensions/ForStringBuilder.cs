@@ -9,12 +9,14 @@ namespace BitFn.Core.Extensions
 	public static class ForStringBuilder
 	{
 		/// <summary>
-		///     Appends the specified number of copies of the string to this instance.
+		///     Appends a specified number of copies of a string to this instance.
 		/// </summary>
-		/// <param name="sb">The string builder to append to.</param>
-		/// <param name="value">The value to append numerous times.</param>
-		/// <param name="repeatCount">The number of times to append the string.</param>
-		/// <returns>The string builder instance.</returns>
+		/// <param name="sb">The <see cref="StringBuilder" /> to append to.</param>
+		/// <param name="value">The string to append.</param>
+		/// <param name="repeatCount">The number of times to append <paramref name="value" />.</param>
+		/// <returns>A reference to this instance after the append operation has completed.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="sb" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="repeatCount" /> is less than <c>0</c>.</exception>
 		public static StringBuilder Append(this StringBuilder sb, string value, int repeatCount)
 		{
 			if (sb == null) throw new ArgumentNullException(nameof(sb));
@@ -23,7 +25,7 @@ namespace BitFn.Core.Extensions
 			{
 				throw new ArgumentOutOfRangeException(nameof(repeatCount), repeatCount, "Argument cannot be less than zero.");
 			}
-			if (repeatCount == 0 || value == null || value.Length == 0)
+			if (repeatCount == 0 || string.IsNullOrEmpty(value))
 			{
 				return sb;
 			}

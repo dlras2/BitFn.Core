@@ -10,37 +10,39 @@ namespace BitFn.Core.Extensions
 	public static class ForExpression
 	{
 		/// <summary>
-		///     Gets the property info for the property represented by the given lambda.
+		///     Gets the <see cref="PropertyInfo" /> for the property represented by the given expression.
 		/// </summary>
-		/// <typeparam name="TSource">The source type.</typeparam>
-		/// <typeparam name="TProperty">The property type.</typeparam>
-		/// <param name="propertyLambda">The lambda representation of the property to get.</param>
-		/// <returns>The property info for the property represented by the given lambda.</returns>
+		/// <typeparam name="TSource">The type implementing the property.</typeparam>
+		/// <typeparam name="TProperty">The type of the property.</typeparam>
+		/// <param name="property">An expression of the property whose info to get.</param>
+		/// <returns>The <see cref="PropertyInfo" /> for the property represented by the given expression.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="property" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="property" /> does not refer to a property from the given type.</exception>
 		/// <remarks>
 		///     Adapted from Cameron MacFarland's answer on StackOverflow.
 		///     http://stackoverflow.com/users/3820/
 		///     http://stackoverflow.com/a/672212/343238
 		/// </remarks>
 		public static PropertyInfo GetPropertyInfo<TSource, TProperty>(
-			this Expression<Func<TSource, TProperty>> propertyLambda)
+			this Expression<Func<TSource, TProperty>> property)
 		{
-			if (propertyLambda == null) throw new ArgumentNullException(nameof(propertyLambda));
+			if (property == null) throw new ArgumentNullException(nameof(property));
 
-			var member = propertyLambda.Body as MemberExpression;
+			var member = property.Body as MemberExpression;
 			if (member == null)
 			{
-				throw new ArgumentException($"Expression '{propertyLambda}' refers to a method, not a property.");
+				throw new ArgumentException($"Expression '{property}' refers to a method, not a property.");
 			}
 			var propInfo = member.Member as PropertyInfo;
 			if (propInfo == null)
 			{
-				throw new ArgumentException($"Expression '{propertyLambda}' refers to a field, not a property.");
+				throw new ArgumentException($"Expression '{property}' refers to a field, not a property.");
 			}
 			if (propInfo.ReflectedType == null ||
 			    (typeof (TSource) != propInfo.ReflectedType && !typeof (TSource).IsSubclassOf(propInfo.ReflectedType)))
 			{
 				throw new ArgumentException(
-					$"Expresion '{propertyLambda}' refers to a property that is not from type {typeof (TSource)}.");
+					$"Expresion '{property}' refers to a property that is not from type {typeof (TSource)}.");
 			}
 			return propInfo;
 		}

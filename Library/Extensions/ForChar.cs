@@ -9,10 +9,10 @@ namespace BitFn.Core.Extensions
 	public static class ForChar
 	{
 		/// <summary>
-		///     Returns the 4-digit hexadecimal string representing the given Unicode character.
+		///     Converts the Unicode value of this character to its equivalent 4-character hexadecimal string representation.
 		/// </summary>
-		/// <param name="ch">The character to use.</param>
-		/// <returns>The 4-digit hexadecimal string representing the given Unicode character.</returns>
+		/// <param name="ch">A character to convert to a hexadecimal string.</param>
+		/// <returns>The equivalent 4-character hexadecimal string representation.</returns>
 		public static string ToHex(this char ch)
 		{
 			return string.Join(string.Empty, BitConverter.GetBytes(ch).Reverse().Select(_ => $"{_,2:X}"))

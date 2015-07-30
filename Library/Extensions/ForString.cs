@@ -27,10 +27,10 @@ namespace BitFn.Core.Extensions
 		/// <summary>
 		///     Removes non-spacing marks from all characters, such as the accent in 'resumé'.
 		/// </summary>
-		/// <param name="s">The string to use.</param>
+		/// <param name="s">A string to remove non-spacing marks from.</param>
 		/// <returns>A string with non-spacing marks removed.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="s" /> is <c>null</c>.</exception>
 		/// <seealso cref="UnicodeCategory.NonSpacingMark" />
-		/// <exception cref="ArgumentNullException">The value of 'this' cannot be null. </exception>
 		public static string RemoveDiacritics(this string s)
 		{
 			if (s == null) throw new ArgumentNullException(nameof(s));
@@ -53,19 +53,20 @@ namespace BitFn.Core.Extensions
 		///     punctuation are either ignored or replaced with dashes, while diacritics are removed and certain common Latin
 		///     ligatures are replaced. Optionally converts open-close punctuation to parenthesis.
 		/// </summary>
-		/// <remarks>
-		///     This method takes a very literal and technically incorrect approach to certain foreign characters, such as mu (µ)
-		///     to u, thorn (þ) to p, etc. Any more-delicate handling of these characters should be done beforehand.
-		/// </remarks>
-		/// <param name="s">The string to use.</param>
+		/// <param name="s">A string to convert to a slug.</param>
 		/// <param name="lowercase">Whether or not to convert all alpha characters to lowercase.</param>
 		/// <param name="parenthetical">Whether or not to convert open and close punctuations to matched parentheses.</param>
 		/// <param name="strict">Whether or not to fail when encountering unhandled characters.</param>
-		/// <returns>A url-safe slug containing only alphanumerics and the dash character.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">String contains an unhandled letter or number character.</exception>
-		/// <seealso cref="RemoveDiacritics" />
+		/// <returns>A url-safe slug containing only alphanumerics, the dash character, and optional parentheses.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="s" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///     <paramref name="s" /> contains unhandled characters and <paramref name="strict" /> is <c>true</c>.
+		/// </exception>
+		/// <remarks>
+		///     This method takes a very visually-biased and linguistically incorrect approach to certain foreign characters, such
+		///     as mu (µ) to u, thorn (þ) to p, etc. Any more-delicate handling of these characters should be done beforehand.
+		/// </remarks>
 		/// <seealso cref="UnicodeCategory" />
-		/// <exception cref="ArgumentNullException">The value of 'this' cannot be null. </exception>
 		public static string ToSlug(this string s, bool lowercase = false,
 			bool parenthetical = false, bool strict = false)
 		{
