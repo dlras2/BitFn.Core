@@ -38,6 +38,7 @@ namespace BitFn.Core.Extensions
 			Contract.Requires<ArgumentNullException>(source != null);
 			Contract.Ensures(Contract.Result<IOrderedQueryable<T>>() != null);
 
+			// TODO: Figure out why Code Contracts thinks comparer can't be null.
 			return source.OrderBy(_ => _, comparer ?? Comparer<T>.Default);
 		}
 
@@ -69,6 +70,7 @@ namespace BitFn.Core.Extensions
 			Contract.Requires<ArgumentNullException>(source != null);
 			Contract.Ensures(Contract.Result<IOrderedQueryable<T>>() != null);
 
+			// TODO: Figure out why Code Contracts thinks comparer can't be null.
 			return source.OrderByDescending(_ => _, comparer ?? Comparer<T>.Default);
 		}
 	}
