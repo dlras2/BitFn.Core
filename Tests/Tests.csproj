@@ -81,6 +81,8 @@
   <ItemGroup>
     <Compile Include="Extensions\ForChar\ToHex.cs" />
     <Compile Include="Extensions\ForExpression\GetPropertyInfo.cs" />
+    <Compile Include="Extensions\ForIDictionary\IncrementBy.cs" />
+    <Compile Include="Extensions\ForIDictionary\Increment.cs" />
     <Compile Include="Extensions\ForIEnumerable\CountByMany.cs" />
     <Compile Include="Extensions\ForIEnumerable\CountBy.cs" />
     <Compile Include="Extensions\ForIEnumerable\OrderDescending.cs" />
@@ -113,6 +115,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
