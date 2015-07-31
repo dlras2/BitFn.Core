@@ -17,6 +17,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="key">The object to use as the key of the element.</param>
 		/// <param name="newValue">The object to use as the value of the element to add if none exists.</param>
 		/// <returns>The existing element, or the element added.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="dictionary" /> or <paramref name="key" /> is <c>null</c>.</exception>
 		public static TValue GetOrAdd<TKey, TValue>(
 			this IDictionary<TKey, TValue> dictionary, TKey key, TValue newValue)
 		{
@@ -40,6 +41,9 @@ namespace BitFn.Core.Extensions
 		/// <param name="key">The object to use as the key of the element.</param>
 		/// <param name="newValueFactory">A factory to create the object to use as the value of the element to add if none exists.</param>
 		/// <returns>The existing element, or the element created and added.</returns>
+		/// <exception cref="ArgumentNullException">
+		///     <paramref name="dictionary" />, <paramref name="key" />, or <paramref name="newValueFactory" /> is <c>null</c>.
+		/// </exception>
 		public static TValue GetOrAdd<TKey, TValue>(
 			this IDictionary<TKey, TValue> dictionary, TKey key, Func<TValue> newValueFactory)
 		{
@@ -62,6 +66,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="dictionary">The dictionary whose element to increment.</param>
 		/// <param name="key">The object to use as the key of the element to increment or add.</param>
 		/// <returns>The value of the element after incrementing.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="dictionary" /> or <paramref name="key" /> is <c>null</c>.</exception>
 		public static int Increment<TKey>(this IDictionary<TKey, int> dictionary, TKey key)
 		{
 			Contract.Requires<ArgumentNullException>(dictionary != null);
@@ -85,6 +90,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="key">The object to use as the key of the element to increment or add.</param>
 		/// <param name="step">The number to increment the element by.</param>
 		/// <returns>The value of the element after incrementing.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="dictionary" /> or <paramref name="key" /> is <c>null</c>.</exception>
 		public static int IncrementBy<TKey>(this IDictionary<TKey, int> dictionary, TKey key, int step)
 		{
 			Contract.Requires<ArgumentNullException>(dictionary != null);
