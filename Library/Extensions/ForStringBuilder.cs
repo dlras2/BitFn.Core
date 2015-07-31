@@ -23,6 +23,7 @@ namespace BitFn.Core.Extensions
 			Contract.Requires<ArgumentNullException>(sb != null);
 			Contract.Requires<ArgumentOutOfRangeException>(repeatCount >= 0);
 			Contract.Ensures(Contract.Result<StringBuilder>() != null);
+			Contract.Ensures(ReferenceEquals(Contract.Result<StringBuilder>(), sb));
 
 			if (repeatCount == 0 || string.IsNullOrEmpty(value))
 			{

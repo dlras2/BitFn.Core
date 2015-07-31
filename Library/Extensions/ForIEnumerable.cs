@@ -253,7 +253,6 @@ namespace BitFn.Core.Extensions
 		/// <param name="source">An <see cref="IEnumerable{T}" /> to create a <see cref="Dictionary{TKey,TValue}" /> from.</param>
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
-		[Pure]
 		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
 		{
 			Contract.Requires<ArgumentNullException>(source != null);
@@ -270,7 +269,6 @@ namespace BitFn.Core.Extensions
 		/// <param name="comparer">An <see cref="IEqualityComparer{T}" /> to compare keys.</param>
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
-		[Pure]
 		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(
 			this IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey> comparer)
 		{
