@@ -8,6 +8,7 @@ using NUnit.Framework;
 namespace BitFn.Core.Tests.Extensions.ForExpression
 {
 	[TestFixture]
+	[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
 	public class GetPropertyInfo
 	{
 		[ExcludeFromCodeCoverage]
@@ -17,6 +18,7 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 		}
 
 		[ExcludeFromCodeCoverage]
+		[SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
 		private class TestPoco
 		{
 #pragma warning disable 649
@@ -25,6 +27,7 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 			public object Property { get; set; }
 			public ChildPoco Child { get; set; }
 
+			[SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Local")]
 			public object Method()
 			{
 				return new object();
@@ -32,6 +35,7 @@ namespace BitFn.Core.Tests.Extensions.ForExpression
 		}
 
 		[ExcludeFromCodeCoverage]
+		[SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
 		private class ChildPoco
 		{
 			public object Property { get; set; }

@@ -11,95 +11,158 @@ namespace BitFn.Core.Tests.Extensions.ForIDictionary
 	public class GetOrAdd
 	{
 		[ExcludeFromCodeCoverage]
-		private static TestDelegate TestDelegate<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
+		private static TestDelegate TestDelegate<TKey, TValue>(
+			IDictionary<TKey, TValue> dictionary, TKey key, TValue newValue)
 		{
-			return () => Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, value);
+			return () => Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, newValue);
 		}
 
 		[ExcludeFromCodeCoverage]
-		private static TestDelegate TestDelegate<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key,
-			Func<TValue> valueFactory)
+		private static TestDelegate TestDelegate<TKey, TValue>(
+			IDictionary<TKey, TValue> dictionary, TKey key, Func<TValue> newValueFactory)
 		{
-			return () => Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, valueFactory);
+			return () => Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, newValueFactory);
 		}
 
 		[ExcludeFromCodeCoverage]
-		private static object FactoryDelegate(object obj) => obj;
+		private static Func<T> FactoryDelegate<T>() => () => { throw new Exception(); };
 
 		[Test]
-		public void WhenValueExists_ShouldGet()
+		public void WhenValueExists_ShouldReturnOldValue()
 		{
 			// Arrange
 			var key = Guid.NewGuid().ToString();
-			var expected = new object();
-			var unexpected = new object();
-			var dictionary = new Dictionary<string, object> {[key] = expected};
+			var expected = Guid.NewGuid();
+			var dictionary = new Dictionary<string, Guid> {[key] = expected};
 
 			// Act
-			var actual = Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, unexpected);
+			var actual = Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, Guid.NewGuid());
 
 			// Assert
-			Assert.AreSame(expected, actual);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[Test]
-		public void WhenValueMissing_ShouldGet()
+		public void WhenValueMissing_ShouldReturnNewValue()
 		{
 			// Arrange
 			var key = Guid.NewGuid().ToString();
-			var expected = new object();
-			var dictionary = new Dictionary<string, object>();
+			var expected = Guid.NewGuid();
+			var dictionary = new Dictionary<string, Guid>();
 
 			// Act
 			var actual = Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, expected);
 
 			// Assert
-			Assert.AreSame(expected, actual);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[Test]
-		public void WhenValueExistsWithFactory_ShouldGet()
+		public void WhenValueExistsWithFactory_ShouldReturnOldValue()
 		{
 			// Arrange
 			var key = Guid.NewGuid().ToString();
-			var expected = new object();
-			var unexpected = new object();
-			var dictionary = new Dictionary<string, object> {[key] = expected};
+			var expected = Guid.NewGuid();
+			var dictionary = new Dictionary<string, Guid> {[key] = expected};
 
 			// Act
-			var actual = Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, FactoryDelegate(unexpected));
+			var actual = Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, FactoryDelegate<Guid>());
 
 			// Assert
-			Assert.AreSame(expected, actual);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[Test]
-		public void WhenValueMissingWithFactory_ShouldGet()
+		public void WhenValueMissingWithFactory_ShouldReturnNewValue()
 		{
 			// Arrange
 			var key = Guid.NewGuid().ToString();
-			var expected = new object();
-			Func<object> expectedFactory = () => expected;
-			var dictionary = new Dictionary<string, object>();
+			var expected = Guid.NewGuid();
+			var expectedFactory = (Func<Guid>) (() => expected);
+			var dictionary = new Dictionary<string, Guid>();
 
 			// Act
 			var actual = Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, expectedFactory);
 
 			// Assert
-			Assert.AreSame(expected, actual);
+			Assert.AreEqual(expected, actual);
+		}
+
+		[Test]
+		public void WhenValueExists_ShouldRetainOldValue()
+		{
+			// Arrange
+			var key = Guid.NewGuid().ToString();
+			var expected = Guid.NewGuid();
+			var dictionary = new Dictionary<string, Guid> {[key] = expected};
+
+			// Act
+			Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, Guid.NewGuid());
+			var actual = dictionary[key];
+
+			// Assert
+			Assert.AreEqual(expected, actual);
+		}
+
+		[Test]
+		public void WhenValueMissing_ShouldSetToNewValue()
+		{
+			// Arrange
+			var key = Guid.NewGuid().ToString();
+			var expected = Guid.NewGuid();
+			var dictionary = new Dictionary<string, Guid>();
+
+			// Act
+			Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, expected);
+			var actual = dictionary[key];
+
+			// Assert
+			Assert.AreEqual(expected, actual);
+		}
+
+		[Test]
+		public void WhenValueExistsWithFactory_ShouldRetainOldValue()
+		{
+			// Arrange
+			var key = Guid.NewGuid().ToString();
+			var expected = Guid.NewGuid();
+			var dictionary = new Dictionary<string, Guid> {[key] = expected};
+
+			// Act
+			Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, FactoryDelegate<Guid>());
+			var actual = dictionary[key];
+
+			// Assert
+			Assert.AreEqual(expected, actual);
+		}
+
+		[Test]
+		public void WhenValueMissingWithFactory_ShouldSetToNewValue()
+		{
+			// Arrange
+			var key = Guid.NewGuid().ToString();
+			var expected = Guid.NewGuid();
+			var expectedFactory = (Func<Guid>) (() => expected);
+			var dictionary = new Dictionary<string, Guid>();
+
+			// Act
+			Core.Extensions.ForIDictionary.GetOrAdd(dictionary, key, expectedFactory);
+			var actual = dictionary[key];
+
+			// Assert
+			Assert.AreEqual(expected, actual);
 		}
 
 		[Test]
 		public void WhenGivenNullDictionary_ShouldThrowArgumentNullException()
 		{
 			// Arrange
-			var dictionary = null as Dictionary<object, object>;
-			var key = new object();
-			var value = new object();
+			var dictionary = null as IDictionary<string, Guid>;
+			var key = Guid.NewGuid().ToString();
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			var code = TestDelegate(dictionary, key, value);
+			var code = TestDelegate(dictionary, key, Guid.NewGuid());
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -109,13 +172,12 @@ namespace BitFn.Core.Tests.Extensions.ForIDictionary
 		public void WhenGivenNullKey_ShouldThrowArgumentNullException()
 		{
 			// Arrange
-			var dictionary = new Dictionary<object, object>();
-			var key = null as object;
-			var value = new object();
+			var dictionary = new Dictionary<string, Guid>();
+			var key = null as string;
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			var code = TestDelegate(dictionary, key, value);
+			var code = TestDelegate(dictionary, key, Guid.NewGuid());
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -125,13 +187,12 @@ namespace BitFn.Core.Tests.Extensions.ForIDictionary
 		public void WhenGivenNullDictionaryWithFactory_ShouldThrowArgumentNullException()
 		{
 			// Arrange
-			var dictionary = null as Dictionary<object, object>;
-			var key = new object();
-			var value = new object();
+			var dictionary = null as IDictionary<string, Guid>;
+			var key = Guid.NewGuid().ToString();
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			var code = TestDelegate(dictionary, key, FactoryDelegate(value));
+			var code = TestDelegate(dictionary, key, FactoryDelegate<Guid>());
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -141,13 +202,12 @@ namespace BitFn.Core.Tests.Extensions.ForIDictionary
 		public void WhenGivenNullKeyWithFactory_ShouldThrowArgumentNullException()
 		{
 			// Arrange
-			var dictionary = new Dictionary<object, object>();
-			var key = null as object;
-			var value = new object();
+			var dictionary = new Dictionary<string, Guid>();
+			var key = null as string;
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			var code = TestDelegate(dictionary, key, FactoryDelegate(value));
+			var code = TestDelegate(dictionary, key, FactoryDelegate<Guid>());
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);
@@ -157,13 +217,13 @@ namespace BitFn.Core.Tests.Extensions.ForIDictionary
 		public void WhenGivenNullFactory_ShouldThrowArgumentNullException()
 		{
 			// Arrange
-			var dictionary = new Dictionary<object, object>();
-			var key = new object();
-			var valueFactory = null as Func<object>;
+			var dictionary = new Dictionary<string, Guid>();
+			var key = Guid.NewGuid().ToString();
+			var factory = null as Func<Guid>;
 
 			// Act
 			// ReSharper disable once ExpressionIsAlwaysNull
-			var code = TestDelegate(dictionary, key, valueFactory);
+			var code = TestDelegate(dictionary, key, factory);
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(code);

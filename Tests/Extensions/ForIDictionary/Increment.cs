@@ -21,8 +21,8 @@ namespace BitFn.Core.Tests.Extensions.ForIDictionary
 		{
 			// Arrange
 			var key = Guid.NewGuid().ToString();
-			var dictionary = new Dictionary<string, int>();
 			const int expected = 1;
+			var dictionary = new Dictionary<string, int>();
 
 			// Act
 			var actual = Core.Extensions.ForIDictionary.Increment(dictionary, key);
@@ -36,8 +36,8 @@ namespace BitFn.Core.Tests.Extensions.ForIDictionary
 		{
 			// Arrange
 			var key = Guid.NewGuid().ToString();
-			var dictionary = new Dictionary<string, int>();
 			const int expected = 1;
+			var dictionary = new Dictionary<string, int>();
 
 			// Act
 			Core.Extensions.ForIDictionary.Increment(dictionary, key);
@@ -52,8 +52,8 @@ namespace BitFn.Core.Tests.Extensions.ForIDictionary
 		{
 			// Arrange
 			var key = Guid.NewGuid().ToString();
-			var dictionary = new Dictionary<string, int> {[key] = value};
 			var expected = value + 1;
+			var dictionary = new Dictionary<string, int> {[key] = value};
 
 			// Act
 			var actual = Core.Extensions.ForIDictionary.Increment(dictionary, key);
@@ -67,8 +67,8 @@ namespace BitFn.Core.Tests.Extensions.ForIDictionary
 		{
 			// Arrange
 			var key = Guid.NewGuid().ToString();
-			var dictionary = new Dictionary<string, int> {[key] = value};
 			var expected = value + 1;
+			var dictionary = new Dictionary<string, int> {[key] = value};
 
 			// Act
 			Core.Extensions.ForIDictionary.Increment(dictionary, key);
