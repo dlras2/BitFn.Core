@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Extensions\ForChar\ToHex.cs" />
     <Compile Include="Extensions\ForExpression\GetPropertyInfo.cs" />
+    <Compile Include="Extensions\ForIDictionary\UpdateOrAdd.cs" />
     <Compile Include="Extensions\ForIDictionary\GetOrAdd.cs" />
     <Compile Include="Extensions\ForIDictionary\IncrementBy.cs" />
     <Compile Include="Extensions\ForIDictionary\Increment.cs" />

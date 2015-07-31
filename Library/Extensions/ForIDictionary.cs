@@ -105,5 +105,73 @@ namespace BitFn.Core.Extensions
 			dictionary.Add(key, step);
 			return step;
 		}
+
+		/// <summary>
+		///     Updates the element with the provided key and transform, or adds an element with the provided key and value if none
+		///     exists.
+		/// </summary>
+		/// <param name="dictionary">The dictionary whose element to transform.</param>
+		/// <param name="key">The object to use as the key of the element to transform or add.</param>
+		/// <param name="valueTransform">The transform to apply to an existing element.</param>
+		/// <param name="newValue">The object to use as the value of the element to add if none exists.</param>
+		/// <returns>The transformed element, or the element added.</returns>
+		/// <exception cref="ArgumentNullException">
+		///     <paramref name="dictionary" />, <paramref name="key" />, or <paramref name="valueTransform" /> is <c>null</c>.
+		/// </exception>
+		public static TValue UpdateOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
+			TKey key, Func<TValue, TValue> valueTransform, TValue newValue)
+		{
+			Contract.Requires<ArgumentNullException>(dictionary != null);
+			Contract.Requires<ArgumentNullException>(key != null);
+			Contract.Requires<ArgumentNullException>(valueTransform != null);
+
+			TValue result;
+			if (dictionary.TryGetValue(key, out result) == false)
+			{
+				result = newValue;
+				dictionary.Add(key, result);
+			}
+			else
+			{
+				result = valueTransform(result);
+				dictionary[key] = result;
+			}
+			return result;
+		}
+
+		/// <summary>
+		///     Updates the element with the provided key and transform, or adds an element with the provided key and created value
+		///     if none exists.
+		/// </summary>
+		/// <param name="dictionary">The dictionary whose element to transform.</param>
+		/// <param name="key">The object to use as the key of the element to transform or add.</param>
+		/// <param name="valueTransform">The transform to apply to an existing element.</param>
+		/// <param name="newValueFactory">A factory to create the object to use as the value of the element to add if none exists.</param>
+		/// <returns>The transformed element, or the element created and added.</returns>
+		/// <exception cref="ArgumentNullException">
+		///     <paramref name="dictionary" />, <paramref name="key" />, <paramref name="valueTransform" />, or
+		///     <paramref name="newValueFactory" /> is <c>null</c>.
+		/// </exception>
+		public static TValue UpdateOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
+			TKey key, Func<TValue, TValue> valueTransform, Func<TValue> newValueFactory)
+		{
+			Contract.Requires<ArgumentNullException>(dictionary != null);
+			Contract.Requires<ArgumentNullException>(key != null);
+			Contract.Requires<ArgumentNullException>(valueTransform != null);
+			Contract.Requires<ArgumentNullException>(newValueFactory != null);
+
+			TValue result;
+			if (dictionary.TryGetValue(key, out result) == false)
+			{
+				result = newValueFactory();
+				dictionary.Add(key, result);
+			}
+			else
+			{
+				result = valueTransform(result);
+				dictionary[key] = result;
+			}
+			return result;
+		}
 	}
 }
