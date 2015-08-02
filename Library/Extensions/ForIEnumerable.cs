@@ -248,6 +248,71 @@ namespace BitFn.Core.Extensions
 		}
 
 		/// <summary>
+		///     Iterates over each element of the enumerable, throwing the given exception if the predicate is matched.
+		/// </summary>
+		/// <param name="source">The sequence of elements to verify.</param>
+		/// <param name="predicate">A function to test each element for a condition.</param>
+		/// <returns>The verified enumerable.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="predicate" /> is <c>null</c>.</exception>
+		[Pure]
+		public static IEnumerable<TSource> ThrowIfAny<TSource, TException>(
+			this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+			where TException : Exception, new()
+		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Requires<ArgumentNullException>(predicate != null);
+			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
+
+			return ThrowIfAnyIterator(source, predicate, _ => new TException());
+		}
+
+		/// <summary>
+		///     Iterates over each element of the enumerable, throwing the given exception if the predicate is matched.
+		/// </summary>
+		/// <param name="source">The sequence of elements to verify.</param>
+		/// <param name="predicate">A function to test each element for a condition.</param>
+		/// <param name="exception">The exception to throw if the condition is met.</param>
+		/// <returns>The verified enumerable.</returns>
+		/// <exception cref="ArgumentNullException">
+		///     <paramref name="source" />, <paramref name="predicate" />, or <paramref name="exception" /> is <c>null</c>.
+		/// </exception>
+		[Pure]
+		public static IEnumerable<TSource> ThrowIfAny<TSource, TException>(
+			this IEnumerable<TSource> source, Func<TSource, bool> predicate, TException exception)
+			where TException : Exception
+		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Requires<ArgumentNullException>(predicate != null);
+			Contract.Requires<ArgumentNullException>(exception != null);
+			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
+
+			return ThrowIfAnyIterator(source, predicate, _ => exception);
+		}
+
+		/// <summary>
+		///     Iterates over each element of the enumerable, throwing the given exception if the predicate is matched.
+		/// </summary>
+		/// <param name="source">The sequence of elements to verify.</param>
+		/// <param name="predicate">A function to test each element for a condition.</param>
+		/// <param name="exceptionFactory">A method returning the exception to throw if the condition is met.</param>
+		/// <returns>The verified enumerable.</returns>
+		/// <exception cref="ArgumentNullException">
+		///     <paramref name="source" />, <paramref name="predicate" />, or <paramref name="exceptionFactory" /> is <c>null</c>.
+		/// </exception>
+		[Pure]
+		public static IEnumerable<TSource> ThrowIfAny<TSource, TException>(
+			this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TSource, TException> exceptionFactory)
+			where TException : Exception
+		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Requires<ArgumentNullException>(predicate != null);
+			Contract.Requires<ArgumentNullException>(exceptionFactory != null);
+			Contract.Ensures(Contract.Result<IEnumerable<TSource>>() != null);
+
+			return ThrowIfAnyIterator(source, predicate, exceptionFactory);
+		}
+
+		/// <summary>
 		///     Creates a <see cref="Dictionary{TKey,TValue}" /> from an <see cref="IEnumerable{T}" />.
 		/// </summary>
 		/// <param name="source">An <see cref="IEnumerable{T}" /> to create a <see cref="Dictionary{TKey,TValue}" /> from.</param>
@@ -292,6 +357,21 @@ namespace BitFn.Core.Extensions
 				yield return buffer[j];
 
 				buffer[j] = buffer[i];
+			}
+		}
+
+		private static IEnumerable<TSource> ThrowIfAnyIterator<TSource, TException>(
+			IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TSource, TException> exceptionFactory)
+			where TException : Exception
+		{
+			foreach (var item in source)
+			{
+				if (predicate(item))
+				{
+					var exception = exceptionFactory(item);
+					throw exception;
+				}
+				yield return item;
 			}
 		}
 	}
