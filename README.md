@@ -3,6 +3,9 @@
 A general utility library.
 
 #### Release Notes:
+- **0.1.5**
+  - `+` `Extensions.ForIDictionary`
+  - `*` `Extensions.ForIEnumerable`
 - **0.1.4**
   - `+` Code Contract support.
   - `*` Documentation updates.
