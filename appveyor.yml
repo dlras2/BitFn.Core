@@ -9,7 +9,6 @@ init:
 
 install:
   - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
-  - ps: .\install-ms-code-contracts.ps1
   - ps: .\appveyor.install.ps1
 
 assembly_info:

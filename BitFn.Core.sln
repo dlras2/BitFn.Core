@@ -18,7 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Appveyor", "Appveyor", "{16
 		appveyor.before_build.ps1 = appveyor.before_build.ps1
 		appveyor.install.ps1 = appveyor.install.ps1
 		appveyor.yml = appveyor.yml
-		install-ms-code-contracts.ps1 = install-ms-code-contracts.ps1
 	EndProjectSection
 EndProject
 Global
