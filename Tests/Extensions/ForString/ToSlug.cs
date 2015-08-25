@@ -98,6 +98,17 @@ namespace BitFn.Core.Tests.Extensions.ForString
 			Assert.Throws<ArgumentOutOfRangeException>(code);
 		}
 
+		[TestCase("Connor's", Result = "Connors")]
+		[TestCase("O'Connor", Result = "OConnor")]
+		[TestCase("O'Connor's", Result = "OConnors")]
+		[TestCase("O’Connor\u2019s", Result = "OConnors")]
+		[TestCase("O’Connor\u201Bs", Result = "OConnors")]
+		[TestCase("‘Nevermore’", Result = "Nevermore")]
+		public string WhenGivenApostrophe_ReturnsStripped(string s)
+		{
+			return Core.Extensions.ForString.ToSlug(s);
+		}
+
 		[TestCase("à la mode", Result = "a-la-mode")]
 		[TestCase("cañón", Result = "canon")]
 		[TestCase("daïs", Result = "dais")]
