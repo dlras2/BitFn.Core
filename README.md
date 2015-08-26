@@ -3,6 +3,9 @@
 A general utility library.
 
 #### Release Notes:
+- **Upcoming**
+  - `+` Added `IDictionary.IncrementAll` extension and two overloads
+  - `*` Renamed `IDictionary.IncrementBy` to be an overload of `IDictionary.Increment`
 - **0.1.5**
   - `+` `Extensions.ForIDictionary`
   - `*` `Extensions.ForIEnumerable`

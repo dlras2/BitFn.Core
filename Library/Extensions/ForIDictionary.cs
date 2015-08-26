@@ -91,7 +91,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="step">The number to increment the element by.</param>
 		/// <returns>The value of the element after incrementing.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="dictionary" /> or <paramref name="key" /> is <c>null</c>.</exception>
-		public static int IncrementBy<TKey>(this IDictionary<TKey, int> dictionary, TKey key, int step)
+		public static int Increment<TKey>(this IDictionary<TKey, int> dictionary, TKey key, int step)
 		{
 			Contract.Requires<ArgumentNullException>(dictionary != null);
 			Contract.Requires<ArgumentNullException>(key != null);
@@ -104,6 +104,107 @@ namespace BitFn.Core.Extensions
 			}
 			dictionary.Add(key, step);
 			return step;
+		}
+
+		/// <summary>
+		///     Increments each element with the provided keys by one. If no element for a given key exists, it is set to one
+		///     instead.
+		/// </summary>
+		/// <param name="dictionary">The dictionary whose element to increment.</param>
+		/// <param name="keys">The objects to use as the keys of the elements to increment or add.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="dictionary" /> or <paramref name="keys" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="keys" /> contains <c>null</c>.</exception>
+		public static void IncrementAll<TKey>(this IDictionary<TKey, int> dictionary, IEnumerable<TKey> keys)
+		{
+			Contract.Requires<ArgumentNullException>(dictionary != null);
+			Contract.Requires<ArgumentNullException>(keys != null);
+
+			foreach (var key in keys)
+			{
+				if (ReferenceEquals(key, null))
+				{
+					throw new ArgumentException("Null keys not allowed.", nameof(keys));
+				}
+				int value;
+				if (dictionary.TryGetValue(key, out value))
+				{
+					dictionary[key] = value + 1;
+				}
+				else
+				{
+					dictionary.Add(key, 1);
+				}
+			}
+		}
+
+		/// <summary>
+		///     Increments each element with the provided keys by the provided step. If no element for a given key exists, it is
+		///     set to the step value instead.
+		/// </summary>
+		/// <param name="dictionary">The dictionary whose element to increment.</param>
+		/// <param name="keys">The objects to use as the keys of the elements to increment or add.</param>
+		/// <param name="step">The number to increment each element by.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="dictionary" /> or <paramref name="keys" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="keys" /> contains <c>null</c>.</exception>
+		public static void IncrementAll<TKey>(this IDictionary<TKey, int> dictionary, IEnumerable<TKey> keys, int step)
+		{
+			Contract.Requires<ArgumentNullException>(dictionary != null);
+			Contract.Requires<ArgumentNullException>(keys != null);
+
+			foreach (var key in keys)
+			{
+				if (ReferenceEquals(key, null))
+				{
+					throw new ArgumentException("Null keys not allowed.", nameof(keys));
+				}
+				int value;
+				if (dictionary.TryGetValue(key, out value))
+				{
+					dictionary[key] = value + step;
+				}
+				else
+				{
+					dictionary.Add(key, step);
+				}
+			}
+		}
+
+		/// <summary>
+		///     Increments each element with the provided keys by the paired step. If no element for a given key exists, it is set
+		///     to the paired step value instead.
+		/// </summary>
+		/// <param name="dictionary">The dictionary whose element to increment.</param>
+		/// <param name="keyStepPairs">
+		///     The objects to use as the key of the elements to increment or add, and their paired step
+		///     value to increment by.
+		/// </param>
+		/// <exception cref="ArgumentNullException">
+		///     <paramref name="dictionary" /> or <paramref name="keyStepPairs" /> is
+		///     <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentException"><paramref name="keyStepPairs" /> contains a <c>null</c> key.</exception>
+		public static void IncrementAll<TKey>(this IDictionary<TKey, int> dictionary,
+			IEnumerable<KeyValuePair<TKey, int>> keyStepPairs)
+		{
+			Contract.Requires<ArgumentNullException>(dictionary != null);
+			Contract.Requires<ArgumentNullException>(keyStepPairs != null);
+
+			foreach (var kvp in keyStepPairs)
+			{
+				if (ReferenceEquals(kvp.Key, null))
+				{
+					throw new ArgumentException("Null keys not allowed.", nameof(keyStepPairs));
+				}
+				int value;
+				if (dictionary.TryGetValue(kvp.Key, out value))
+				{
+					dictionary[kvp.Key] = value + kvp.Value;
+				}
+				else
+				{
+					dictionary.Add(kvp.Key, kvp.Value);
+				}
+			}
 		}
 
 		/// <summary>
