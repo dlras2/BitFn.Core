@@ -4,25 +4,31 @@ A general utility library.
 
 #### Release Notes:
 - **0.1.6**
-  - `+` Added `IDictionary.IncrementAll` extension and two overloads
-  - `*` Renamed `IDictionary.IncrementBy` to be an overload of `IDictionary.Increment`
+  - Added `IDictionary<T, int>.IncrementAll` and step and kvp overloads
+  - Renamed `IDictionary.IncrementBy` to be an overload of `IDictionary.Increment`
 - **0.1.5**
-  - `+` `Extensions.ForIDictionary`
-  - `*` `Extensions.ForIEnumerable`
+  - Added `IEnumerable<T>.CountBy`, `IEnumerable<T>.CountByMany`, and comparer overloads
+  - Added `IEnumerable<T>.ThrowIfAny` and exception overloads
+  - Added `IDictionary<T, int>.Increment` and `IDictionary<T, int>.IncrementBy`
+  - Added `IDictionary<TKey, TValue>.GetOrAdd` and factory overload
+  - Added `IDictionary<TKey, TValue>.UpdateOrAdd` and factory overload
 - **0.1.4**
-  - `+` Code Contract support.
-  - `*` Documentation updates.
+  - Added Code Contracts throughout
+  - Changed and standardized XML documentation
 - **0.1.3**
-  - `+` `RandomDelegates`
-  - `+` `Extensions.ForIQueryable`
-  - `*` `Extensions.ForIEnumerable`
-  - `*` `ThreadSafeRandom`
+  - Added `RandomInt`, `RandomDouble`, etc. delegates
+  - Added `ThreadSafeRandom.RandomInt`, `ThreadSafeRandom.RandomDouble`, etc. properties
+  - Added `IEnumerable<KeyValuePair<TKey, TValue>>.ToDictionary` and comparer overload
+  - Added `IEnumerable<T>.Order`, `IEnumerable<T>.OrderDescending`, and comparer overloads
+  - Added `IQueryable<T>.Order`, `IQueryable<T>.OrderDescending`, and comparer overloads
+  - Changed `IEnumerable<T>.Shuffle` rng overload to consume rng delegate
 - **0.1.2**
-  - `+` `Extensions.ForString`
+  - Added `string.RemoveDiacritics`
+  - Added `string.ToSlug`
 - **0.1.1**
-  - `+` `Extensions.ForIEnumerable`
-  - `+` `ThreadSafeRandom`
+  - Added `IEnumerable<T>.Shuffle` and rng overload
+  - Added `ThreadSafeRandom.Local`
 - **0.1.0** Initial release.
-  - `+` `Extensions.ForChar`
-  - `+` `Extensions.ForExpression`
-  - `+` `Extensions.ForStringBuilder`
+  - Added `Char.ToHex`
+  - Added `Expression<Func<TSource, TProperty>>.GetPropertyInfo`
+  - Added `StringBuilder.Append` overload with `repeatCount`
