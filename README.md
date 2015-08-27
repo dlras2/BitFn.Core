@@ -3,6 +3,9 @@
 A general utility library.
 
 #### Release Notes:
+- **Upcoming**
+  - Added XML documentation outout
+  - Added Symbol publishing
 - **0.1.6**
   - Added `IDictionary<T, int>.IncrementAll` and step and kvp overloads
   - Renamed `IDictionary.IncrementBy` to be an overload of `IDictionary.Increment`
