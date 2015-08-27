@@ -3,8 +3,8 @@
 A general utility library.
 
 #### Release Notes:
-- **Upcoming**
-  - Added XML documentation outout
+- **0.1.7**
+  - Added XML documentation output
   - Added Symbol publishing
 - **0.1.6**
   - Added `IDictionary<T, int>.IncrementAll` and step and kvp overloads
