@@ -6,6 +6,9 @@ using System.Text;
 
 namespace BitFn.Core.Extensions
 {
+	/// <summary>
+	///     Extension methods for the <see cref="string" /> class.
+	/// </summary>
 	public static class ForString
 	{
 		private static readonly IDictionary<char, string> ForeignCharacterSlugs = new Dictionary<char, string>
