@@ -11,6 +11,20 @@ namespace BitFn.Core.Extensions
 	public static class ForIEnumerable
 	{
 		/// <summary>
+		///     Aggregates the given sources into a single enumerable.
+		/// </summary>
+		/// <param name="source">The source to aggregate.</param>
+		/// <returns>A single aggregated enumerable.</returns>
+		public static IEnumerable<T> Aggregate<T>(this IEnumerable<IEnumerable<T>> source)
+		{
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
+			// ReSharper disable once PossibleMultipleEnumeration
+			return source.SelectMany(_ => _);
+		}
+
+		/// <summary>
 		///     Groups the elements of a sequence according to a specified key selector function, then counts the number of
 		///     elements each group contains. Each element is counted exactly once.
 		/// </summary>

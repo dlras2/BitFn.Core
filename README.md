@@ -3,6 +3,8 @@
 A general utility library.
 
 #### Release Notes:
+- **Upcoming**
+  - Added `IEnumerable<IEnumerable<T>>.Aggregate`
 - **0.1.7**
   - Added XML documentation output
   - Added Symbol publishing
