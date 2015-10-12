@@ -20,6 +20,6 @@
 	</metadata>
 	<files>
 		<file src="..\*.md" target="" />
-		<file src="bin\$configuration$\CodeContracts\$id$.Contracts.dll" target="lib\net452\CodeContracts\" />
+		<file src="bin\$configuration$\CodeContracts\$id$.Contracts.dll" target="lib\net451\CodeContracts\" />
 	</files>
 </package>
