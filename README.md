@@ -3,7 +3,7 @@
 A general utility library.
 
 #### Release Notes:
-- **Upcoming**
+- **0.1.8**
   - Added `IEnumerable<IEnumerable<T>>.Aggregate`
   - Added `IDictionary<TKey, ISet<TValue>>.AddTo` and `IDictionary<TKey, IList<TValue>>.AddTo`
   - Changed target framework from 4.5.2 to 4.5.1
