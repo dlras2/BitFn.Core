@@ -5,6 +5,7 @@ A general utility library.
 #### Release Notes:
 - **Upcoming**
   - Added `IEnumerable<IEnumerable<T>>.Aggregate`
+  - Added `IDictionary<TKey, ISet<TValue>>.AddTo` and `IDictionary<TKey, IList<TValue>>.AddTo`
 - **0.1.7**
   - Added XML documentation output
   - Added Symbol publishing

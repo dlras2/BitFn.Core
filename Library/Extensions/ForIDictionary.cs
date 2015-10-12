@@ -10,6 +10,53 @@ namespace BitFn.Core.Extensions
 	public static class ForIDictionary
 	{
 		/// <summary>
+		///     Adds an element to the list with the provided, or adds a new list with the provided key and the single element.
+		/// </summary>
+		/// <param name="dictionary">The dictionary whose list to add or add to.</param>
+		/// <param name="key">The object to use as the key of the list.</param>
+		/// <param name="value">The value to add to the list with the given key.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="dictionary" /> or <paramref name="key" /> is <c>null</c>.</exception>
+		public static void AddTo<TKey, TValue>(
+			this IDictionary<TKey, IList<TValue>> dictionary, TKey key, TValue value)
+		{
+			Contract.Requires<ArgumentNullException>(dictionary != null);
+			Contract.Requires<ArgumentNullException>(key != null);
+
+			IList<TValue> list;
+			if (dictionary.TryGetValue(key, out list))
+			{
+				list.Add(value);
+				return;
+			}
+			list = new List<TValue> {value};
+			dictionary.Add(key, list);
+		}
+
+		/// <summary>
+		///     Adds an element to the set with the provided, or adds a new set with the provided key and the single element.
+		/// </summary>
+		/// <param name="dictionary">The dictionary whose set to add or add to.</param>
+		/// <param name="key">The object to use as the key of the set.</param>
+		/// <param name="value">The value to add to the set with the given key.</param>
+		/// <returns><c>true</c> if the element is added to the set; <c>false</c> if the element is already in the set.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="dictionary" /> or <paramref name="key" /> is <c>null</c>.</exception>
+		public static bool AddTo<TKey, TValue>(
+			this IDictionary<TKey, ISet<TValue>> dictionary, TKey key, TValue value)
+		{
+			Contract.Requires<ArgumentNullException>(dictionary != null);
+			Contract.Requires<ArgumentNullException>(key != null);
+
+			ISet<TValue> set;
+			if (dictionary.TryGetValue(key, out set))
+			{
+				return set.Add(value);
+			}
+			set = new HashSet<TValue> {value};
+			dictionary.Add(key, set);
+			return true;
+		}
+
+		/// <summary>
 		///     Gets the element associated with the specified key, or adds an element with the provided key and value if none
 		///     exists.
 		/// </summary>
