@@ -10,7 +10,7 @@ namespace BitFn.Core.Extensions
 	public static class ForIDictionary
 	{
 		/// <summary>
-		///     Adds an element to the list with the provided, or adds a new list with the provided key and the single element.
+		///     Adds an element to the existing list with the provided key, or adds a new list with the provided key and element.
 		/// </summary>
 		/// <param name="dictionary">The dictionary whose list to add or add to.</param>
 		/// <param name="key">The object to use as the key of the list.</param>
@@ -33,7 +33,7 @@ namespace BitFn.Core.Extensions
 		}
 
 		/// <summary>
-		///     Adds an element to the set with the provided, or adds a new set with the provided key and the single element.
+		///     Adds an element to the existing set with the provided key, or adds a new set with the provided key and element.
 		/// </summary>
 		/// <param name="dictionary">The dictionary whose set to add or add to.</param>
 		/// <param name="key">The object to use as the key of the set.</param>
