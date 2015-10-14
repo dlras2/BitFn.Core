@@ -97,6 +97,8 @@
     <Compile Include="Extensions\ForIQueryable\Order.cs" />
     <Compile Include="Extensions\ForIQueryable\OrderDescending.cs" />
     <Compile Include="Extensions\ForStringBuilder\Append.cs" />
+    <Compile Include="Extensions\ForString\UnescapeVerbatim.cs" />
+    <Compile Include="Extensions\ForString\Unescape.cs" />
     <Compile Include="Extensions\ForString\ToSlug.cs" />
     <Compile Include="Extensions\ForString\RemoveDiacritics.cs" />
     <Compile Include="LocalAddin.cs" />

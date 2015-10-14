@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BitFn.Core.Extensions
 {
@@ -27,6 +28,10 @@ namespace BitFn.Core.Extensions
 			['\u1E9E'] = "SS", // ẞ — German capital eszett
 			['\u00DF'] = "ss" // ß — German small eszett
 		};
+
+		private static readonly Lazy<Regex> UnescapeRegex = new Lazy<Regex>(() => new Regex(
+			@"\\(['""\\0abfnrtv]|x[a-fA-F0-9]{1,3}|u[a-fA-F0-9]{4}|U[a-fA-F0-9]{8}|)",
+			RegexOptions.Compiled | RegexOptions.ExplicitCapture));
 
 		/// <summary>
 		///     Removes non-spacing marks from all characters, such as the accent in 'resumé'.
@@ -186,6 +191,133 @@ namespace BitFn.Core.Extensions
 			}
 			// Return slug re-normalized to FormC.
 			return (sb.ToString().Normalize(NormalizationForm.FormC));
+		}
+
+		/// <summary>
+		///     Converts the string to an unescaped string, following the rules for C# string literal escaping.
+		/// </summary>
+		/// <param name="s">A string to unescape.</param>
+		/// <returns>An unescaped string.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="s" /> is <c>null</c>.</exception>
+		/// <exception cref="FormatException"><paramref name="s" /> contains a backslash followed by invalid characters.</exception>
+		/// <seealso cref="UnescapeVerbatim" />
+		/// <remarks>
+		///     The valid escape sequences can be found here under "Escaping in character and string literals":
+		///     http://www.codeproject.com/Articles/371232/Escaping-in-Csharp-characters-strings-string-forma
+		/// </remarks>
+		[Pure]
+		public static string Unescape(this string s)
+		{
+			Contract.Requires<ArgumentNullException>(s != null);
+			Contract.Ensures(Contract.Result<string>() != null);
+
+			if (s.Length == 0) return string.Empty;
+			var match = UnescapeRegex.Value.Match(s);
+			if (match.Success == false) return s;
+
+			var position = 0;
+			var sb = new StringBuilder(s.Length);
+			do
+			{
+				if (match.Value.Length == 1)
+				{
+					throw new FormatException($"Invalid escape sequence found at character {match.Index}.");
+				}
+				// Append non-escaped characters between last match and this match
+				if (match.Index > position) sb.Append(s, position, match.Index - position);
+				// Append escaped character
+				switch (match.Value[1])
+				{
+					case '\'':
+						sb.Append('\'');
+						break;
+					case '"':
+						sb.Append('\"');
+						break;
+					case '\\':
+						sb.Append('\\');
+						break;
+					case '0':
+						sb.Append('\0');
+						break;
+					case 'a':
+						sb.Append('\a');
+						break;
+					case 'b':
+						sb.Append('\b');
+						break;
+					case 'f':
+						sb.Append('\f');
+						break;
+					case 'n':
+						sb.Append('\n');
+						break;
+					case 'r':
+						sb.Append('\r');
+						break;
+					case 't':
+						sb.Append('\t');
+						break;
+					case 'v':
+						sb.Append('\v');
+						break;
+					case 'u':
+					case 'x':
+						// Append single escaped Unicode character
+						var c = (char) int.Parse(match.Value.Substring(2), NumberStyles.HexNumber);
+						sb.Append(c);
+						break;
+					case 'U':
+						// Append surrogate pair of Unicode characters
+						var p = char.ConvertFromUtf32(int.Parse(match.Value.Substring(2), NumberStyles.HexNumber));
+						sb.Append(p);
+						break;
+				}
+				// Increment position to end oft his match
+				position = match.Index + match.Length;
+				// Move to the next match, if there is one
+			} while ((match = match.NextMatch()).Success);
+			// Append non-escaped characters between last match and end
+			if (position < s.Length) sb.Append(s, position, s.Length - position);
+			return sb.ToString();
+		}
+
+		/// <summary>
+		///     Converts the string to an unescaped string, following the rules for C# verbatim string escaping.
+		/// </summary>
+		/// <param name="s">A string to unescape.</param>
+		/// <returns>An unescaped string.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="s" /> is <c>null</c>.</exception>
+		/// <exception cref="FormatException"><paramref name="s" /> contains a quotation mark not immediately followed by another.</exception>
+		/// <seealso cref="Unescape" />
+		[Pure]
+		public static string UnescapeVerbatim(this string s)
+		{
+			Contract.Requires<ArgumentNullException>(s != null);
+			Contract.Ensures(Contract.Result<string>() != null);
+
+			if (s.Length == 0) return string.Empty;
+			var match = s.IndexOf('"');
+			if (match == -1) return s;
+
+			var sb = new StringBuilder(s.Length);
+			var position = 0;
+			do
+			{
+				if (match == s.Length - 1 || s[match + 1] != '"')
+				{
+					throw new FormatException($"Invalid escape sequence found at character {match}.");
+				}
+				// Append non-escaped characters between last match and this match
+				if (match > position) sb.Append(s, position, match - position);
+				sb.Append('"');
+				// Increment position to end oft his match
+				position = match + 2;
+				// Move to the next match, if there is one
+			} while ((match = s.IndexOf('"', position)) != -1);
+			// Append non-escaped characters between last match and end
+			if (position < s.Length) sb.Append(s, position, s.Length - position);
+			return sb.ToString();
 		}
 	}
 }
