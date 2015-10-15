@@ -5,6 +5,8 @@ A general utility library.
 #### Release Notes:
 - **Upcoming**
   - Added `string.Unescape` and `string.UnescapeVerbatim`
+  - Renamed `IEnumerable<IEnumerable<T>>.Aggregate` to `IEnumerable<IEnumerable<T>>.Flatten`
+  - Added secondary and tertiary levels to `IEnumerable<IEnumerable<T>>.Flatten`
 - **0.1.8**
   - Added `IEnumerable<IEnumerable<T>>.Aggregate`
   - Added `IDictionary<TKey, ISet<TValue>>.AddTo` and `IDictionary<TKey, IList<TValue>>.AddTo`
