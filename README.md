@@ -3,7 +3,7 @@
 A general utility library.
 
 #### Release Notes:
-- **Upcoming**
+- **0.1.9**
   - Added `string.Unescape` and `string.UnescapeVerbatim`
   - Renamed `IEnumerable<IEnumerable<T>>.Aggregate` to `IEnumerable<IEnumerable<T>>.Flatten`
   - Added secondary and tertiary levels to `IEnumerable<IEnumerable<T>>.Flatten`
