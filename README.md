@@ -3,7 +3,7 @@
 A general utility library.
 
 #### Release Notes:
-- **Upcoming**
+- **0.1.10**
   - Added `IEnumerable<T>.Append` and `Concat` overload
 - **0.1.9**
   - Added `string.Unescape` and `string.UnescapeVerbatim`
