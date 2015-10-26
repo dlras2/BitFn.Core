@@ -3,6 +3,8 @@
 A general utility library.
 
 #### Release Notes:
+- **Upcoming**
+  - Added `IEnumerable<T>.Append` and `Concat` overload
 - **0.1.9**
   - Added `string.Unescape` and `string.UnescapeVerbatim`
   - Renamed `IEnumerable<IEnumerable<T>>.Aggregate` to `IEnumerable<IEnumerable<T>>.Flatten`

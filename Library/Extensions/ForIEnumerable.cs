@@ -11,6 +11,38 @@ namespace BitFn.Core.Extensions
 	public static class ForIEnumerable
 	{
 		/// <summary>
+		///     Appends multiple elements to the given sequence.
+		/// </summary>
+		/// <param name="enumerable">An <see cref="IEnumerable{T}" /> to append additional elements to.</param>
+		/// <param name="elements">The additional elements to append.</param>
+		/// <returns>An <see cref="IEnumerable{T}" /> that contains the additional elements.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="enumerable" /> or <paramref name="elements" /> is <c>null</c>.</exception>
+		public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, params T[] elements)
+		{
+			Contract.Requires<ArgumentNullException>(enumerable != null);
+			Contract.Requires<ArgumentNullException>(elements != null);
+			Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
+			return elements.Length > 0 ? Enumerable.Concat(enumerable, elements) : enumerable;
+		}
+
+		/// <summary>
+		///     Concatenates multiple sequences.
+		/// </summary>
+		/// <param name="first">An <see cref="IEnumerable{T}" /> to concatenate additional sequences to.</param>
+		/// <param name="subsequent">The additional <see cref="IEnumerable{T}" /> objects whose elements to append.</param>
+		/// <returns>An <see cref="IEnumerable{T}" /> that contains the elements of all sequences.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="first" /> or <paramref name="subsequent" /> is <c>null</c>.</exception>
+		public static IEnumerable<T> Concat<T>(this IEnumerable<T> first, params IEnumerable<T>[] subsequent)
+		{
+			Contract.Requires<ArgumentNullException>(first != null);
+			Contract.Requires<ArgumentNullException>(subsequent != null);
+			Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
+			return subsequent.Aggregate(first, Enumerable.Concat);
+		}
+
+		/// <summary>
 		///     Groups the elements of a sequence according to a specified key selector function, then counts the number of
 		///     elements each group contains. Each element is counted exactly once.
 		/// </summary>

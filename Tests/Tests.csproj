@@ -86,6 +86,8 @@
     <Compile Include="Extensions\ForIDictionary\GetOrAdd.cs" />
     <Compile Include="Extensions\ForIDictionary\IncrementAll.cs" />
     <Compile Include="Extensions\ForIDictionary\Increment.cs" />
+    <Compile Include="Extensions\ForIEnumerable\Concat.cs" />
+    <Compile Include="Extensions\ForIEnumerable\Append.cs" />
     <Compile Include="Extensions\ForIEnumerable\Flatten.cs" />
     <Compile Include="Extensions\ForIEnumerable\ThrowIfAny.cs" />
     <Compile Include="Extensions\ForIEnumerable\CountByMany.cs" />
