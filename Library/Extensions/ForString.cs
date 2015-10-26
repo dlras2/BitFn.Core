@@ -69,7 +69,7 @@ namespace BitFn.Core.Extensions
 		[Pure]
 		public static string ToAscii(this string s)
 		{
-			// TODO: Unit testing, additional character Unicode handling
+			// TODO: Additional character Unicode handling
 
 			Contract.Requires<ArgumentNullException>(s != null);
 			Contract.Ensures(Contract.Result<string>() != null);

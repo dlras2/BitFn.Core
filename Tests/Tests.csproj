@@ -99,6 +99,7 @@
     <Compile Include="Extensions\ForIQueryable\Order.cs" />
     <Compile Include="Extensions\ForIQueryable\OrderDescending.cs" />
     <Compile Include="Extensions\ForStringBuilder\Append.cs" />
+    <Compile Include="Extensions\ForString\ToAscii.cs" />
     <Compile Include="Extensions\ForString\UnescapeVerbatim.cs" />
     <Compile Include="Extensions\ForString\Unescape.cs" />
     <Compile Include="Extensions\ForString\ToSlug.cs" />
