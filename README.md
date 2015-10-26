@@ -3,6 +3,9 @@
 A general utility library.
 
 #### Release Notes:
+- **Upcoming**
+  - Added `string.ToAscii`
+  - Deprecated `string.RemoveDiacritics`
 - **0.1.10**
   - Added `IEnumerable<T>.Append` and `Concat` overload
 - **0.1.9**

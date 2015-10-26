@@ -12,7 +12,7 @@ namespace BitFn.Core.Extensions
 	/// </summary>
 	public static class ForString
 	{
-		private static readonly IDictionary<char, string> ForeignCharacterSlugs = new Dictionary<char, string>
+		private static readonly IDictionary<char, string> UnicodeToAscii = new Dictionary<char, string>
 		{
 			['\u00B5'] = "u", // µ — Greek letter mu
 			['\u00D0'] = "D", // Ð — Latin capital letter eth
@@ -41,6 +41,7 @@ namespace BitFn.Core.Extensions
 		/// <exception cref="ArgumentNullException"><paramref name="s" /> is <c>null</c>.</exception>
 		/// <seealso cref="UnicodeCategory.NonSpacingMark" />
 		[Pure]
+		[Obsolete("This functionality is an incomplete subset of that provided by ToAscii.")]
 		public static string RemoveDiacritics(this string s)
 		{
 			Contract.Requires<ArgumentNullException>(s != null);
@@ -57,6 +58,39 @@ namespace BitFn.Core.Extensions
 			}
 			// ReSharper restore LoopCanBePartlyConvertedToQuery
 			return (sb.ToString().Normalize(NormalizationForm.FormC));
+		}
+
+		/// <summary>
+		///     Removes non-spacing marks from all characters, and replaces non-ASCII characters with available ASCII equivalents.
+		/// </summary>
+		/// <param name="s">A string whose letters to convert to ASCII.</param>
+		/// <returns>A string with non-ASCII characters replaced with available ASCII equivalents.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="s" /> is <c>null</c>.</exception>
+		[Pure]
+		public static string ToAscii(this string s)
+		{
+			// TODO: Unit testing, additional character Unicode handling
+
+			Contract.Requires<ArgumentNullException>(s != null);
+			Contract.Ensures(Contract.Result<string>() != null);
+
+			var formD = s.Normalize(NormalizationForm.FormD);
+			var result = new StringBuilder(s.Length);
+			foreach (var ch in formD)
+			{
+				var category = CharUnicodeInfo.GetUnicodeCategory(ch);
+				if (category == UnicodeCategory.NonSpacingMark) continue;
+
+				string ascii;
+				if (UnicodeToAscii.TryGetValue(ch, out ascii))
+				{
+					result.Append(ascii);
+					continue;
+				}
+
+				result.Append(ch);
+			}
+			return (result.ToString().Normalize(NormalizationForm.FormC));
 		}
 
 		/// <summary>
@@ -82,6 +116,8 @@ namespace BitFn.Core.Extensions
 		public static string ToSlug(this string s, bool lowercase = false,
 			bool parenthetical = false, bool strict = false)
 		{
+			// TODO: Refactor to use ToAscii method
+
 			Contract.Requires<ArgumentNullException>(s != null);
 			Contract.Ensures(Contract.Result<string>() != null);
 
@@ -121,7 +157,7 @@ namespace BitFn.Core.Extensions
 					wordbreak = true;
 					continue;
 				}
-				else if (ForeignCharacterSlugs.TryGetValue(ch, out append))
+				else if (UnicodeToAscii.TryGetValue(ch, out append))
 				{
 					// We have an (approximate) slug equivalent for this character.
 					if (lowercase)
