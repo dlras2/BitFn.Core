@@ -11,6 +11,8 @@ namespace BitFn.Core.Tests.Extensions.ForString
 		[TestCase(@"Line:\t1\r\nLine:	2", Result = "Line:\t1\r\nLine:	2")]
 		[TestCase(@"Line:\u00091\xaLine:\u00092", Result = "Line:\t1\nLine:\t2")]
 		[TestCase(@"Les Mise\U00000301rables", Result = "Les Mise\U00000301rables")]
+		[TestCase(@"Les Mise\x301rables", Result = "Les Mise\x301rables")]
+		[TestCase(@"Les Mise\x0301rables", Result = "Les Mise\x0301rables")]
 		[TestCase(@"\'\""\\\0\a\b\f\n\r\t\v", Result = "\'\"\\\0\a\b\f\n\r\t\v")]
 		public string WhenEscapedString_ReturnsUnescaped(string s)
 		{

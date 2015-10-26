@@ -30,7 +30,7 @@ namespace BitFn.Core.Extensions
 		};
 
 		private static readonly Lazy<Regex> UnescapeRegex = new Lazy<Regex>(() => new Regex(
-			@"\\(['""\\0abfnrtv]|x[a-fA-F0-9]{1,3}|u[a-fA-F0-9]{4}|U[a-fA-F0-9]{8}|)",
+			@"\\(['""\\0abfnrtv]|x[a-fA-F0-9]{1,4}|u[a-fA-F0-9]{4}|U[a-fA-F0-9]{8}|)",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture));
 
 		/// <summary>
