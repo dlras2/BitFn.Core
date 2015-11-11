@@ -51,7 +51,7 @@ namespace BitFn.Core.Extensions
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains the selected key and number of elements with that key.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="selector" /> is <c>null</c>.</exception>
 		/// <exception cref="ArgumentException"><paramref name="selector" /> returned a <c>null</c> key.</exception>
-		public static IDictionary<TKey, int> CountBy<TValue, TKey>(
+		public static Dictionary<TKey, int> CountBy<TValue, TKey>(
 			this IEnumerable<TValue> source, Func<TValue, TKey> selector)
 		{
 			Contract.Requires<ArgumentNullException>(source != null);
@@ -80,7 +80,7 @@ namespace BitFn.Core.Extensions
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains the selected key and number of elements with that key.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="selector" /> is <c>null</c>.</exception>
 		/// <exception cref="ArgumentException"><paramref name="selector" /> returned a <c>null</c> key.</exception>
-		public static IDictionary<TKey, int> CountBy<TValue, TKey>(
+		public static Dictionary<TKey, int> CountBy<TValue, TKey>(
 			this IEnumerable<TValue> source, Func<TValue, TKey> selector, IEqualityComparer<TKey> comparer)
 		{
 			Contract.Requires<ArgumentNullException>(source != null);
@@ -108,7 +108,7 @@ namespace BitFn.Core.Extensions
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains the selected key and number of elements with that key.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="selector" /> is <c>null</c>.</exception>
 		/// <exception cref="ArgumentException"><paramref name="selector" /> returned a <c>null</c> enumerable.</exception>
-		public static IDictionary<TKey, int> CountByMany<TValue, TKey>(
+		public static Dictionary<TKey, int> CountByMany<TValue, TKey>(
 			this IEnumerable<TValue> source, Func<TValue, IEnumerable<TKey>> selector)
 		{
 			Contract.Requires<ArgumentNullException>(source != null);
@@ -139,7 +139,7 @@ namespace BitFn.Core.Extensions
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains the selected key and number of elements with that key.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="selector" /> is <c>null</c>.</exception>
 		/// <exception cref="ArgumentException"><paramref name="selector" /> returned a <c>null</c> enumerable.</exception>
-		public static IDictionary<TKey, int> CountByMany<TValue, TKey>(
+		public static Dictionary<TKey, int> CountByMany<TValue, TKey>(
 			this IEnumerable<TValue> source, Func<TValue, IEnumerable<TKey>> selector, IEqualityComparer<TKey> comparer)
 		{
 			Contract.Requires<ArgumentNullException>(source != null);
@@ -395,7 +395,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="source">An <see cref="IEnumerable{T}" /> to create a <see cref="Dictionary{TKey,TValue}" /> from.</param>
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
-		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
+		public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
 		{
 			Contract.Requires<ArgumentNullException>(source != null);
 			Contract.Ensures(Contract.Result<IDictionary<TKey, TValue>>() != null);
@@ -411,7 +411,7 @@ namespace BitFn.Core.Extensions
 		/// <param name="comparer">An <see cref="IEqualityComparer{T}" /> to compare keys.</param>
 		/// <returns>A <see cref="Dictionary{TKey,TValue}" /> that contains key value pairs selected from the input sequence.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source" /> is <c>null</c>.</exception>
-		public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+		public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
 			this IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey> comparer)
 		{
 			Contract.Requires<ArgumentNullException>(source != null);

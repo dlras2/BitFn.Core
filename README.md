@@ -6,6 +6,7 @@ A general utility library.
 - **Upcoming**
   - Added `string.ToAscii`
   - Fixed a bug in `string.Unescape` regarding \xXXXX patterns
+  - Fixed `IEnumerable` extensions returning `IDictionary` interfaces
   - Deprecated `string.RemoveDiacritics`
 - **0.1.10**
   - Added `IEnumerable<T>.Append` and `Concat` overload
