@@ -131,6 +131,8 @@
   <ItemGroup>
     <Compile Include="Extensions\ForIDictionary.cs" />
     <Compile Include="Extensions\ForIQueryable.cs" />
+    <Compile Include="Helpers\AsciiEquivalent.cs" />
+    <Compile Include="Helpers\UnicodeHelpers.cs" />
     <Compile Include="RandomDelegates.cs" />
     <Compile Include="Extensions\ForString.cs" />
     <Compile Include="Extensions\ForIEnumerable.cs" />
