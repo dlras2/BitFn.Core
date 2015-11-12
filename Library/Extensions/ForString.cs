@@ -92,17 +92,14 @@ namespace BitFn.Core.Extensions
 
 			if (s.Length == 0) return string.Empty;
 
-			// Normalize to FormD in order to remove diacritics.
-			var d = s.Normalize(NormalizationForm.FormD);
 			var sb = new StringBuilder(s.Length);
 
 			var wordbreak = false;
 			var skipbreak = false;
 			var parenCount = 0;
-			foreach (var ch in d)
+			foreach (var ch in EnumerateAsciiCharacters(s))
 			{
 				string append;
-				AsciiEquivalent equivalent;
 				var skipnext = false;
 				if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') || ch == '_')
 				{
@@ -126,13 +123,6 @@ namespace BitFn.Core.Extensions
 					// It also catches certain common characters to avoid dictionary and category lookups.
 					wordbreak = true;
 					continue;
-				}
-				else if (UnicodeHelpers.TryGetAsciiEquivalent(ch, out equivalent))
-				{
-					// We have an (approximate) slug equivalent for this character.
-					append = lowercase
-						? equivalent.ToString().ToLowerInvariant()
-						: equivalent.ToString();
 				}
 				else
 				{
