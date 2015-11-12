@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 
 namespace BitFn.Core.Helpers
 {
@@ -13,6 +14,26 @@ namespace BitFn.Core.Helpers
 			['\u0152'] = "OE", // Œ — latin capital ligature oe
 			['\u00DF'] = "ss", // ß — german small eszett
 			['\u1E9E'] = "SS", // ẞ — german capital eszett
+
+			// Vulgar fractions
+			['\u00BC'] = new AsciiEquivalent("1/4", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u00BD'] = new AsciiEquivalent("1/2", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u00BE'] = new AsciiEquivalent("3/4", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u2150'] = new AsciiEquivalent("1/7", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u2151'] = new AsciiEquivalent("1/9", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u2152'] = new AsciiEquivalent("1/10", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u2153'] = new AsciiEquivalent("1/3", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u2154'] = new AsciiEquivalent("2/3", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u2155'] = new AsciiEquivalent("1/5", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u2156'] = new AsciiEquivalent("2/5", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u2157'] = new AsciiEquivalent("3/5", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u2158'] = new AsciiEquivalent("4/5", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u2159'] = new AsciiEquivalent("1/6", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u215A'] = new AsciiEquivalent("5/6", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u215B'] = new AsciiEquivalent("1/8", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u215C'] = new AsciiEquivalent("3/8", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u215D'] = new AsciiEquivalent("5/8", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
+			['\u215E'] = new AsciiEquivalent("7/8", UnicodeCategory.DecimalDigitNumber, UnicodeCategory.DecimalDigitNumber),
 
 			// Programatically identified Latin letters
 			['\u1DF2'] = "a", // ᷲ — combining latin small letter a with diaeresis

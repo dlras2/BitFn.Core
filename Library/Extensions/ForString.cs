@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using BitFn.Core.Helpers;
@@ -56,23 +58,8 @@ namespace BitFn.Core.Extensions
 			Contract.Requires<ArgumentNullException>(s != null);
 			Contract.Ensures(Contract.Result<string>() != null);
 
-			var formD = s.Normalize(NormalizationForm.FormD);
-			var result = new StringBuilder(s.Length);
-			foreach (var ch in formD)
-			{
-				var category = CharUnicodeInfo.GetUnicodeCategory(ch);
-				if (category == UnicodeCategory.NonSpacingMark) continue;
-
-				AsciiEquivalent equivalent;
-				if (UnicodeHelpers.TryGetAsciiEquivalent(ch, out equivalent))
-				{
-					result.Append(equivalent);
-					continue;
-				}
-
-				result.Append(ch);
-			}
-			return (result.ToString().Normalize(NormalizationForm.FormC));
+			var result = new string(EnumerateAsciiCharacters(s).ToArray());
+			return (result.Normalize(NormalizationForm.FormC));
 		}
 
 		/// <summary>
@@ -335,6 +322,55 @@ namespace BitFn.Core.Extensions
 			// Append non-escaped characters between last match and end
 			if (position < s.Length) sb.Append(s, position, s.Length - position);
 			return sb.ToString();
+		}
+
+		[Pure]
+		private static IEnumerable<char> EnumerateAsciiCharacters(string s)
+		{
+			var formD = s.Normalize(NormalizationForm.FormD);
+			UnicodeCategory? lastCategory = null;
+			UnicodeCategory? breakIfNext = null;
+			foreach (var ch in formD)
+			{
+				// First, check if this is a non-spacing mark. If so, ignore it completely.
+				var category = CharUnicodeInfo.GetUnicodeCategory(ch);
+				if (category == UnicodeCategory.NonSpacingMark) continue;
+
+				// Next, check if this character non-ASCII and has a defined unicode equivalent.
+				AsciiEquivalent equivalent;
+				if (ch > 127 && UnicodeHelpers.TryGetAsciiEquivalent(ch, out equivalent))
+				{
+					// Check if we're waiting to break or should break.
+					var value = equivalent.Value;
+					if ((equivalent.BreakIfAfter == lastCategory && lastCategory != null) ||
+					    breakIfNext == CharUnicodeInfo.GetUnicodeCategory(value[0]))
+					{
+						yield return ' ';
+					}
+
+					// Yield each character in the equivalent string.
+					foreach (var ch2 in value)
+					{
+						yield return ch2;
+					}
+
+					// Set category variables for next iteration.
+					breakIfNext = equivalent.BreakIfBefore;
+					lastCategory = CharUnicodeInfo.GetUnicodeCategory(value[value.Length - 1]);
+					continue;
+				}
+
+				// Next, check if we're waiting to break on this given category.
+				if (breakIfNext == category)
+				{
+					yield return ' ';
+				}
+
+				// Yield the character at hand, then reset category variables.
+				yield return ch;
+				lastCategory = category;
+				breakIfNext = null;
+			}
 		}
 	}
 }

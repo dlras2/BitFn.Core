@@ -22,6 +22,14 @@ namespace BitFn.Core.Tests.Extensions.ForString
 			return Core.Extensions.ForString.ToAscii(s);
 		}
 
+		[TestCase("1½", Result = "1 1/2")]
+		[TestCase("½½", Result = "1/2 1/2")]
+		[TestCase("½1", Result = "1/2 1")]
+		public string WhenEquivalentsRequireBreaks_ReturnsWithAddedSpaces(string s)
+		{
+			return Core.Extensions.ForString.ToAscii(s);
+		}
+
 		[Test]
 		public void WhenGivenEmptyString_ReturnsEmpty()
 		{
