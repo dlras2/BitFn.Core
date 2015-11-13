@@ -3,8 +3,8 @@
 A general utility library.
 
 #### Release Notes:
-- **Upcoming**
-  - Added `string.ToAscii`
+- **0.1.11**
+  - Added `string.ToAscii` as an expanded `RemoveDiacritics`
   - Fixed a bug in `string.Unescape` regarding \xXXXX patterns
   - Fixed `IEnumerable` extensions returning `IDictionary` interfaces
   - Deprecated `string.RemoveDiacritics`
